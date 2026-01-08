@@ -15,6 +15,22 @@ pckg.IsRunning = arg[0] == "pckg" -- checks if its app itself running
 
 -----------------------------------------------
 --
+--                      functions
+--
+-----------------------------------------------
+
+function pckg.GetHttps(url)
+  local https = https.get(url)
+
+
+end
+
+
+
+
+
+-----------------------------------------------
+--
 --                      prefixes
 --
 -----------------------------------------------
