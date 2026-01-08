@@ -20,9 +20,11 @@ pckg.IsRunning = arg[0] == "pckg" -- checks if its app itself running
 -----------------------------------------------
 
 function pckg.GetHttps(url)
-  local https = https.get(url)
+  local httpsReq = https.get(url)
 
+  local response = httpsReq.readAll()
 
+  https.close()
 end
 
 
@@ -84,15 +86,18 @@ function pckg.tokenize(cmd) -- tokenize the command (pckg -i package -b branch -
           
           if lastPrefixInfo and lastPrefixInfo.word then -- chwck if last prefix info
             lastToken.content = word -- set last prefix content to current word if it needs word
+            table.insert(tokens, lastToken)
           else
             table.insert(tokens, token)
 
           end
         
         else
+          table.insert(tokens, lastToken)
           table.insert(tokens, token)
-
         end
+
+        lastToken = token
     end
 end
 
@@ -108,4 +113,6 @@ end
 
 
 
+local command = table.concat(arg, ' ')
 
+print(command)
