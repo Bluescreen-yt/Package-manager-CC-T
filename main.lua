@@ -29,8 +29,37 @@ end
 
 function pckg.GetPckgHeader(line)
     local Headers = {
-        "__PCKG_DATA__"
+        ["__pckg_info__"]="package info",
+        ["__pckg_files__"]="package files",
+        ["__pckg_requirements__"]="package requirements",
+        ["__pckg_startup__"]="startup",
+        ["__pckg_run__"]="run",
+        ["__pckg_run_cmd__"]="run cmd",
+        ["__pckg_standard_header__"]="psh" -- check if even reading the package file
     }
+end
+
+function pckg.CollectDataFromPckg( content )
+    local readingHeaderData
+    local isPckg = false
+    local data = {}  
+    local data.files = {}
+
+    local data.type = "program"
+
+    for line in string.gmath(Content, "[^\n]-)\n") do -- for every line in content do
+        local header = pckg.GetPckgHeader( line ) -- check it current line is header
+        
+        if header then
+            readingHeaderData = Header -- if line is header then set to the ttpe of header
+            if readingHeaderData=="psh" then isPckg = true end -- verifies if we are reading actual pckg file and not other file
+        
+        elseif readingHeaderData=="package info" then
+            local _key, _value = string.match(line, "^([%s%.%-]+): (.+)$") -- extract key and value from data
+        data[_key] = _value 
+
+        end
+    end
 end
 
 -----------------------------------------------
@@ -128,16 +157,9 @@ function pckg.InstallPCKG(FuncArgs) -- install package (PCKG is custom file form
     if FuncArgs.Prefixes then Prefixes = FuncArgs.Prefixes or false -- check for prefixes
     if FuncArgs.Verbose then Verbose = FuncArgs.Verbose or false -- check for verbose
     
-    local ReadingHeaderData
+    local pckgInfo = pckg.CollectDataFromPckg(Content)
     
-    for line in string.gmath(Content, "[^\n]-)\n") do -- for every line in content do
-        local Header = pckg.GetPckgHeader(line)
-        if Header then 
-            ReadingHeaderData = Header
-        end
-
-
-    end
+    
 end
 
 
