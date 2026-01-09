@@ -19,43 +19,45 @@ pckg.IsRunning = arg[0] == "pckg" -- checks if its app itself running
 --
 -----------------------------------------------
 
-function pckg.GetHttps(url)
+function pckg.GetHttps(url) -- quick one line for getting https raw data
     local httpsReq = https.get(url)
-
     local response = httpsReq.readAll()
-
     https.close()
+    return response
 end
 
-function pckg.GetPckgHeader(line)
+function pckg.GetPckgHeader(line) -- check for package header
 
-    local Headers = {
-        ["__pckg_info__"]="package info",
-        ["__pckg_files__"]="package files",
-        ["__pckg_requirements__"]="package requirements",
-        ["__pckg_startup__"]="startup",
-        ["__pckg_run_cmd__"]="run cmd",
+    local Headers = { -- headers
+        ["__pckg_info__"]="package info", -- info about package
+        ["__pckg_files__"]="package files", -- list of files
+        ["__pckg_requirements__"]="package requirements", -- list of requirements for package
+        ["__pckg_startup_cmd__"]="startup cmd", -- list of commands to run on startup
+        ["__pckg_run_cmd__"]="run cmd", -- list of commands to run after installation
         ["__pckg_standard_header__"]="psh" -- check if even reading the package file
     }
+
+    return Headers[line]
 end
 
-function pckg.CollectDataFromPckg( content )
+function pckg.CollectDataFromPckg( content ) -- collect data from PCKG file 
     local readingHeaderData
-    local isPckg = false
-    local data = {}  
-    data.files = {}
-    data.run = {} 
+    local data = {}
 
-    local data.type = "program"
+    data.isPckg = false -- Is this file an pckg file?
+    data.files = {} -- list of files
+    data.run = {} -- list of sommands to run after installation
+
+    data.type = "program" -- default type of pckg is program, there are also: lib, 
 
     for line in string.gmath(Content, "[^\n]-)\n") do -- for every line in content do
         local header = pckg.GetPckgHeader( line ) -- check it current line is header
         
         if header then
             readingHeaderData = Header -- if line is header then set to the ttpe of header
-            if readingHeaderData=="psh" then isPckg = true end -- verifies if we are reading actual pckg file and not other file
+            if readingHeaderData=="psh" then data.isPckg = true end -- verifies if we are reading actual pckg file and not other file
 
-        elseif readingHeaderData=="startup" then
+        elseif readingHeaderData=="startup cmd" then
 
 
         elseif readingHeaderData=="package requirements" then
