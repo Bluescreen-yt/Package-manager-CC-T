@@ -34,7 +34,6 @@ function pckg.GetPckgHeader(line)
         ["__pckg_files__"]="package files",
         ["__pckg_requirements__"]="package requirements",
         ["__pckg_startup__"]="startup",
-        ["__pckg_run__"]="run",
         ["__pckg_run_cmd__"]="run cmd",
         ["__pckg_standard_header__"]="psh" -- check if even reading the package file
     }
@@ -44,7 +43,8 @@ function pckg.CollectDataFromPckg( content )
     local readingHeaderData
     local isPckg = false
     local data = {}  
-    local data.files = {}
+    data.files = {}
+    data.run = {} 
 
     local data.type = "program"
 
@@ -54,11 +54,21 @@ function pckg.CollectDataFromPckg( content )
         if header then
             readingHeaderData = Header -- if line is header then set to the ttpe of header
             if readingHeaderData=="psh" then isPckg = true end -- verifies if we are reading actual pckg file and not other file
-        
-        elseif readingHeaderData=="package info" then
-            local _key, _value = string.match(line, "^([%s%.%-]+): (.+)$") -- extract key and value from data
-        data[_key] = _value 
 
+        elseif readingHeaderData=="startup" then
+
+
+        elseif readingHeaderData=="package requirements" then
+            local required_pckg_name, required_pckg_version = string.match("^([%s%-]+)=(.+)")
+            table.insert(data.requirements, )
+      
+
+        elseif readingHeaderData=="run cmd" then
+            table.insert(data.run, line)
+
+        elseif readingHeaderData=="package info" then -- if reading currently
+            local _key, _value = string.match(line, "^([%s%.%-]+): (.+)$") -- extract key and value from data
+            data[_key] = _value 
         end
     end
 end
