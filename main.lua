@@ -26,6 +26,14 @@ function pckg.GetHttps(url) -- quick one line for getting https raw data
     return response
 end
 
+function pckg.GetSourceHeader(line) -- check for source header
+    local Headers = { -- headers
+        ["__src_static__"]="source static", -- static pckg:branch:link
+        ["__src_dynamic__"]="source dynamic", -- link https://something/{pckg}/{branch}/{version}.pckg
+        ["__src_standard_header__"]="ssh" -- check if even reading the source file
+    }
+end
+
 function pckg.GetPckgHeader(line) -- check for package header
 
     local Headers = { -- headers
@@ -37,7 +45,14 @@ function pckg.GetPckgHeader(line) -- check for package header
         ["__pckg_standard_header__"]="psh" -- check if even reading the package file
     }
 
-    return Headers[line]
+
+    local header
+    for HD, _ in pairs(Headers) do
+        if not header then
+            header = string.match(line, HD)
+        end
+    end
+    return Headers[header]
 end
 
 function pckg.CollectDataFromPckg( content ) -- collect data from PCKG file 
@@ -50,29 +65,34 @@ function pckg.CollectDataFromPckg( content ) -- collect data from PCKG file
 
     data.type = "program" -- default type of pckg is program, there are also: lib, 
 
-    for line in string.gmath(Content, "[^\n]-)\n") do -- for every line in content do
+    for line in string.gmatch(content, "[^\r\n]+") do -- for every line in content do
         local header = pckg.GetPckgHeader( line ) -- check it current line is header
-        
         if header then
-            readingHeaderData = Header -- if line is header then set to the ttpe of header
+            readingHeaderData = header -- if line is header then set to the ttpe of header
             if readingHeaderData=="psh" then data.isPckg = true end -- verifies if we are reading actual pckg file and not other file
 
         elseif readingHeaderData=="startup cmd" then
 
 
         elseif readingHeaderData=="package requirements" then
-            local required_pckg_name, required_pckg_version = string.match("^([%s%-]+)=(.+)")
-            table.insert(data.requirements, )
-      
+            local required_pckg_name, required_pckg_version = string.match(line, "^([%s%-]+)=(.+)")
+            local requirement = {}
+            requirement.name = required_pckg_name
+            requirement.version = required_pckg_version
+            table.insert(data.requirements, requirement)
+
 
         elseif readingHeaderData=="run cmd" then
             table.insert(data.run, line)
 
         elseif readingHeaderData=="package info" then -- if reading currently
-            local _key, _value = string.match(line, "^([%s%.%-]+): (.+)$") -- extract key and value from data
-            data[_key] = _value 
+            local _key, _value = string.match(line, "^(%S+): (.+)$") -- extract key and value from data
+            data[_key] = _value
         end
+
     end
+
+    return data
 end
 
 -----------------------------------------------
@@ -166,9 +186,9 @@ end
 -----------------------------------------------
 
 function pckg.InstallPCKG(FuncArgs) -- install package (PCKG is custom file format for packaged data needed to install program (links etc) )
-    if FuncArgs.Content then pckgPath = FuncArgs.Content or '' -- check for Content ( content of pckg file )
-    if FuncArgs.Prefixes then Prefixes = FuncArgs.Prefixes or false -- check for prefixes
-    if FuncArgs.Verbose then Verbose = FuncArgs.Verbose or false -- check for verbose
+    if FuncArgs.Content then pckgPath = FuncArgs.Content or '' end -- check for Content ( content of pckg file )
+    if FuncArgs.Prefixes then Prefixes = FuncArgs.Prefixes or false end -- check for prefixes
+    if FuncArgs.Verbose then Verbose = FuncArgs.Verbose or false end -- check for verbose
     
     local pckgInfo = pckg.CollectDataFromPckg(Content)
     
@@ -178,6 +198,10 @@ end
 
 
 
+local data = pckg.CollectDataFromPckg("__pckg_standard_header__\n__pckg_files__\n./main.py:https://raw.githubusercontent.com/manaphoenix/CC-Code/main/apps/pls.lua\n__pckg_startup_cmd__\n__pckg_info__\nname: pls\ndescription: an small tool to inspect peripherals from terminal made by: manaphoenix\nversion: 0.1\ntype: program")
+for i, v in pairs(data.files) do
+    print(i, v)
+end
 
 
 
