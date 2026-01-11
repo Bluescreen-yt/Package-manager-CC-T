@@ -4,13 +4,32 @@
 --
 -----------------------------------------------
 
+-- cardboard os admin permisions request
+if NotCraftOsGlobals then
+    local RealGlobals = __request_craftos_globals__()
+    if RealGlobals then
+        _G = RealGlobals
+    else
+        print("pckg will not work without craft os globals. please re run pckg")
+        goto exit
+    end
+end
 
 -- pckg - simple package manager v0.3
 
 local pckg = {} -- register all functions in pckg so it can be required by other program
 
+pckg.dev = true
 pckg.IsLive = arg[0] == "pastebin" or arg[0] == "wget" -- checks if program is running ( throught pastebin / wget run {link})
 pckg.IsRunning = arg[0] == "pckg" -- checks if its app itself running
+
+function pckg.vprint(v, ...)
+    if v then print(...) end
+end
+
+function pckg.dprint(...)
+    pckg.vprint(pckg.dev, ... )
+end
 
 
 -----------------------------------------------
@@ -20,9 +39,10 @@ pckg.IsRunning = arg[0] == "pckg" -- checks if its app itself running
 -----------------------------------------------
 
 function pckg.GetHttps(url) -- quick one line for getting https raw data
-    local httpsReq = https.get(url)
+    if not url then pckg.dprint("CANNOT request nil") return nil end
+    local httpsReq = http.get(url)
     local response = httpsReq.readAll()
-    https.close()
+    httpsReq.close()
     return response
 end
 
@@ -62,20 +82,25 @@ function pckg.CollectDataFromPckg( content ) -- collect data from PCKG file
     data.isPckg = false -- Is this file an pckg file?
     data.files = {} -- list of files
     data.run = {} -- list of sommands to run after installation
+    data.startup = {} -- list of sommands to run after installation
+    data.requirements = {} -- list of requirements
 
     data.type = "program" -- default type of pckg is program, there are also: lib, 
 
     for line in string.gmatch(content, "[^\r\n]+") do -- for every line in content do
         local header = pckg.GetPckgHeader( line ) -- check it current line is header
         if header then
-            readingHeaderData = header -- if line is header then set to the ttpe of header
+            readingHeaderData = header -- if line is an header then set to the type of header
             if readingHeaderData=="psh" then data.isPckg = true end -- verifies if we are reading actual pckg file and not other file
 
-        elseif readingHeaderData=="startup cmd" then
+        elseif readingHeaderData=="startup cmd" then 
+            table.insert(data.startup, line)
 
+        elseif readingHeaderData=="run cmd" then
+            table.insert(data.run, line)
 
         elseif readingHeaderData=="package requirements" then
-            local required_pckg_name, required_pckg_version = string.match(line, "^([%s%-]+)=(.+)")
+            local required_pckg_name, required_pckg_version = string.match(line, "^([%s%-]+)[ ]*=[ ]*(.+)")
             local requirement = {}
             requirement.name = required_pckg_name
             requirement.version = required_pckg_version
@@ -86,8 +111,12 @@ function pckg.CollectDataFromPckg( content ) -- collect data from PCKG file
             table.insert(data.run, line)
 
         elseif readingHeaderData=="package info" then -- if reading currently
-            local _key, _value = string.match(line, "^(%S+): (.+)$") -- extract key and value from data
+            local _key, _value = string.match(line, "^(%S+)[ ]*:[ ]*(.+)$") -- extract key and value from data
             data[_key] = _value
+        
+        elseif readingHeaderData=="package files" then
+            local _path, _url = string.match(line, "^([%S/]+)[ ]*:[ ]*(.+)$")
+            data.files[_path] = _url
         end
 
     end
@@ -178,6 +207,54 @@ function pckg.tokenize(cmd) -- tokenize the command (pckg -i package -b branch -
     return tokens
 end
 
+function pckg.InstallPCKG(FuncArgs) -- install package (PCKG is custom file format for packaged data needed to install program (links etc) )
+    local pckgInfo, Prefixes, Verbose, InstallPath
+    local TypeToInstallDir = {
+        ["program"]="bin/%s/",
+        ["library"]="lib/%s/",
+        ["driver"]="boot/modules/%s/",
+        ["root"]="/"
+    }
+
+    if FuncArgs.pckgInfo then pckgInfo = FuncArgs.pckgInfo or false end -- check for Content ( content of pckg file )
+    if FuncArgs.Prefixes then Prefixes = FuncArgs.Prefixes or false end -- check for prefixes
+    if FuncArgs.Verbose then Verbose = FuncArgs.Verbose or false end -- check for verbose
+    if FuncArgs.OverideInstallPath then InstallPath = FuncArgs.OverideInstallPath else InstallPath = nil end -- check for path overide
+
+    if pckgInfo and pckgInfo.name and not InstallPath then
+        InstallPath = string.format(TypeToInstallDir[pckgInfo.type], pckgInfo.name) -- set default dir path
+        pckg.dprint("no InstallPath overide, package type: "..pckgInfo.type.." InstallPath: "..InstallPath)
+    end
+    
+    
+    if pckgInfo and pckgInfo.isPckg and InstallPath then
+        for filePath, fileUrl in pairs(pckgInfo.files) do
+            local filePath = fs.combine(InstallPath, filePath)
+            
+            local file = fs.open(filePath, 'w')
+            
+            pckg.dprint("Requesting: "..fileUrl.." for file: "..filePath)
+            local fileContent = pckg.GetHttps(fileUrl)
+            if not fileContent then pckg.vprint(Verbose, "Error getting: "..fileUrl.." file: "..filePath) end
+            file.write(fileContent)
+            file.close()
+        end
+
+        for requirement in pairs(pckgInfo.requirements) do
+            
+            -- requirement.name
+            -- requirement.version
+        end
+
+
+
+    else
+        print("the .pckg file might be corrupted...")
+        pckg.dprint(pckgInfo, pckgInfo.isPckg, InstallPath)
+    end
+    
+    
+end
 
 -----------------------------------------------
 --
@@ -185,24 +262,15 @@ end
 --
 -----------------------------------------------
 
-function pckg.InstallPCKG(FuncArgs) -- install package (PCKG is custom file format for packaged data needed to install program (links etc) )
-    if FuncArgs.Content then pckgPath = FuncArgs.Content or '' end -- check for Content ( content of pckg file )
-    if FuncArgs.Prefixes then Prefixes = FuncArgs.Prefixes or false end -- check for prefixes
-    if FuncArgs.Verbose then Verbose = FuncArgs.Verbose or false end -- check for verbose
-    
-    local pckgInfo = pckg.CollectDataFromPckg(Content)
-    
-    
-end
 
 
 
 
-local data = pckg.CollectDataFromPckg("__pckg_standard_header__\n__pckg_files__\n./main.py:https://raw.githubusercontent.com/manaphoenix/CC-Code/main/apps/pls.lua\n__pckg_startup_cmd__\n__pckg_info__\nname: pls\ndescription: an small tool to inspect peripherals from terminal made by: manaphoenix\nversion: 0.1\ntype: program")
-for i, v in pairs(data.files) do
-    print(i, v)
-end
 
+local data = pckg.CollectDataFromPckg("__pckg_standard_header__\n__pckg_files__\n./main.py: https://raw.githubusercontent.com/manaphoenix/CC-Code/main/apps/pls.lua\n__pckg_startup_cmd__\n__pckg_info__\nname: pls\ndescription: an small tool to inspect peripherals from terminal made by: manaphoenix\nversion: 0.1\ntype: program")
+pckg.InstallPCKG({
+    ["pckgInfo"]=data
+})
 
 
 local command = table.concat(arg, ' ')
@@ -211,3 +279,6 @@ local tokenizedCommand = pckg.tokenize(command)
 for i, v in pairs(tokenizedCommand) do
     print(v.type, v.content, v.prefix)
 end
+
+
+::exit::
