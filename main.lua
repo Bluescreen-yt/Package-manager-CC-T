@@ -87,8 +87,16 @@ pckg.prefixes = { -- info about prefixes
     ["o"] = {
         ["desc"] = 'overite installation path',
         ["word"] = true
-    }
+    },
 
+    ["h"] = {
+        ["desc"] = 'displays this message',
+        ['func'] = function (...)
+            for prefix, data in pairs(pckg.prefixes) do
+                print('    '..prefix..' - '..data)
+            end
+        end
+    }
 }
 
 -- tokenizer
@@ -198,7 +206,16 @@ end
 local command = table.concat(arg, ' ')
 local tokenizedCommand = pckg.tokenize(command)
 
+if #tokenizedCommand==0 then
+    print('Nothing to do')
+    print('add -h prefix to display guide')
+    goto exit
+end
+
+
+
 for i, v in pairs(tokenizedCommand) do
+
     print(v.type, v.content, v.prefix)
 end
 
