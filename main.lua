@@ -22,15 +22,16 @@ local pckg = {} -- register all functions in pckg so it can be required by other
 pckg.dev = true
 pckg.IsLive = arg[0] == "pastebin" or arg[0] == "wget" -- checks if program is running ( throught pastebin / wget run {link})
 pckg.IsRunning = arg[0] == "pckg" -- checks if its app itself running
+pckg.verbose = true
+pckg.root = "/"
 
-function pckg.vprint(v, ...)
-    if v then print(...) end
+function pckg.vprint(...)
+    if pckg.verbose then print(...) end
 end
 
 function pckg.dprint(...)
     pckg.vprint(pckg.dev, ... )
 end
-
 
 -----------------------------------------------
 --
@@ -73,15 +74,15 @@ pckg.prefixes = { -- info about prefixes
     },
 
     ["r"] = {
-        ["desc"] = 'reinstall'
+        ["desc"] = 'remove'
     },
 
     ["i"] = {
         ["desc"] = 'install'
     },
 
-    ["u"] = {
-        ["desc"] = 'uninstall'
+    ["ri"] = {
+        ["desc"] = 'reinstall'
     },
 
     ["o"] = {
@@ -96,6 +97,10 @@ pckg.prefixes = { -- info about prefixes
                 print('    '..prefix..' - '..data)
             end
         end
+    },
+
+    ['y'] = {
+        ["answers yes to every question"]
     }
 }
 
@@ -149,12 +154,11 @@ function pckg.InstallPCKG(FuncArgs) -- install package (PCKG is custom file form
         ["program"]="bin/%s/",
         ["library"]="lib/%s/",
         ["driver"]="boot/modules/%s/",
-        ["root"]="/"
+        ["root"]="/%s"
     }
 
     if FuncArgs.pckgInfo then pckgInfo = FuncArgs.pckgInfo or false end -- check for Content ( content of pckg file )
     if FuncArgs.Prefixes then Prefixes = FuncArgs.Prefixes or false end -- check for prefixes
-    if FuncArgs.Verbose then Verbose = FuncArgs.Verbose or false end -- check for verbose
     if FuncArgs.OverideInstallPath then InstallPath = FuncArgs.OverideInstallPath else InstallPath = nil end -- check for path overide
 
     if pckgInfo and pckgInfo.name and not InstallPath then
@@ -171,7 +175,7 @@ function pckg.InstallPCKG(FuncArgs) -- install package (PCKG is custom file form
             
             pckg.dprint("Requesting: "..fileUrl.." for file: "..filePath)
             local fileContent = pckg.GetHttps(fileUrl)
-            if not fileContent then pckg.vprint(Verbose, "Error getting: "..fileUrl.." file: "..filePath) end
+            if not fileContent then pckg.vprint("Error getting: "..fileUrl.." file: "..filePath) end
             file.write(fileContent)
             file.close()
         end
@@ -185,7 +189,7 @@ function pckg.InstallPCKG(FuncArgs) -- install package (PCKG is custom file form
 
 
     else
-        print("the .pckg file might be corrupted...")
+        pckg.vprint("the .pckg file might be corrupted...")
         pckg.dprint(pckgInfo, pckgInfo.isPckg, InstallPath)
     end
     
