@@ -19,11 +19,17 @@ end
 
 local pckg = {} -- register all functions in pckg so it can be required by other program
 
+pckg.version = 0.3
+pckg.versiomnName = "3.0 - dev"
 pckg.dev = true
 pckg.IsLive = arg[0] == "pastebin" or arg[0] == "wget" -- checks if program is running ( throught pastebin / wget run {link})
 pckg.IsRunning = arg[0] == "pckg" -- checks if its app itself running
 pckg.verbose = true
+
 pckg.root = "/"
+pckg.dbType = "offline"
+pckg.dbPath = "%s/etc/pckg/packages.pckgdb"
+
 
 function pckg.vprint(...)
     if pckg.verbose then print(...) end
@@ -85,8 +91,23 @@ pckg.prefixes = { -- info about prefixes
         ["desc"] = 'reinstall'
     },
 
-    ["o"] = {
+    ["oi"] = {
         ["desc"] = 'overite installation path',
+        ["word"] = true
+    },
+
+    ["or"] = {
+        ["desc"] = 'overite root path',
+        ["word"] = true
+    },
+
+    ["odbt"] = {
+        ["desc"] = 'overite database type ( offline by default )',
+        ["word"] = true
+    },
+
+    ["odbp"] = {
+        ["desc"] = 'overite database path ( %s/etc/pckg/packages.pckgdb by default )',
         ["word"] = true
     },
 
@@ -101,6 +122,15 @@ pckg.prefixes = { -- info about prefixes
 
     ['y'] = {
         ["answers yes to every question"]
+    },
+
+    ["V"] = {
+        ["desc"] = 'outputs pckg version',
+        ['func'] = function (...)
+            print('pckg made by: bluescreen_yt, dedicated for cardboard os')
+            print('please contant author if you find any bugs / issues / suggest new features or want to contrubute')
+            print('version: '..pckg.versiomnName)
+        end
     }
 }
 
