@@ -121,7 +121,7 @@ pckg.prefixes = { -- info about prefixes
     },
 
     ['y'] = {
-        ["answers yes to every question"]
+       ["desc"]="answers yes to every question"
     },
 
     ["V"] = {
@@ -140,43 +140,47 @@ function isToken(token, type) -- check if token's type
 end
 
 function pckg.tokenize(cmd) -- tokenize the command (pckg -i package -b branch -v version)
-    local tokens = {} -- initilize token table
-    local lastToken
+    local words = {} -- initilize token table
+    local currentWord = ''
+    local connected = false
 
-    for word in string.gmatch(cmd, "%S+") do -- for words in cmd do:
-        local token = {}
-
-        if word:sub(1, 1) == "-" then -- check if the word starts with -
-            token.type = 'prefix' -- create  token with type 'prefix' and value of prefix
-            token.prefix = word:sub(2)
-        else
-            token.content = word
-            token.type = 'word'
-        end
-
-        if isToken(lastToken, 'prefix') then -- check if last token is prefix
-
-            local lastPrefixInfo = pckg.prefixes[lastToken.prefix] -- get last prefix info
-
-            if lastPrefixInfo and lastPrefixInfo.word then -- check if last prefix info
-                lastToken.content = word -- set last prefix content to current word if it needs word
-            else
-                table.insert(tokens, token)
-
+    for i=1, #cmd do -- for every letter in command
+        local char = cmd:sub(i,i) -- get current letter 
+        
+        if char == '"' then -- check if current letter is an quote if yes flip connected var
+            connected = not connected -- FLIP
+            
+            if  not connected then -- if end quote set char to space
+                char = ' '
             end
-
-            else
-            table.insert(tokens, lastToken)
-            table.insert(tokens, token)
         end
 
-
-        lastToken = token
-
+        if char == ' ' and not connected then -- check if current letter is an whitespace, and if the words are not connected with quotes
+            if currentWord~="" then table.insert(words , currentWord) end
+            
+            currentWord = ''
+        else
+            if char ~= '"' then
+              currentWord = currentWord..char
+            end
+        end
     end
 
-    return tokens
+    local idx=0
+    
+  while idx<#words do
+        idx=idx+1
+        local word = words[idx]
+        local prefixData = pckg.prefixes[word]
+
+        if prefixData then 
+            local requiresWord = prefixData.word
+            if requiresWord then
+  end
+
+    return words
 end
+
 
 function pckg.InstallPCKG(FuncArgs) -- install package (PCKG is custom file format for packaged data needed to install program (links etc) )
     local pckgInfo, Prefixes, Verbose, InstallPath
@@ -237,7 +241,7 @@ end
 
 
 
-local command = table.concat(arg, ' ')
+local command = 'pckg testing "hello world"lol abc'--table.concat(arg, ' ')
 local tokenizedCommand = pckg.tokenize(command)
 
 if #tokenizedCommand==0 then
