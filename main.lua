@@ -78,7 +78,7 @@ end
 
 
 function pckgManager.install(package, version) -- install package
-    pckgManager.print(pckgManager.printLevel.message, "pckgManager.install( '"..package or "nil" .."', '".. version or "nil" .."' ) - start" )
+    pckgManager.print(pckgManager.printLevel.message, "pckgManager.install( '"..package .."', '".. version .."' ) - start" )
     if not package then
         pckgManager.print(pckgManager.printLevel.error, "No package specified" )
         return 1, "no package specified"
@@ -101,6 +101,7 @@ function pckgManager.install(package, version) -- install package
     end
 
     if version == "latest" then
+        pckgManager.print(pckgManager.printLevel.message, "getting latest version" )
         version = pckgDB.latest
 
         if not version then
@@ -109,15 +110,40 @@ function pckgManager.install(package, version) -- install package
         end
     end
 
-
-
+    pckgManager.print(pckgManager.printLevel.message, "getting version: "..version )
     local pckg_data = pckgDB[version]
     if not pckg_data then
         pckgManager.print(pckgManager.printLevel.error, "could not get "..version.." version of the package "..package )
         return 4, "failed to retrive version data"
     end
 
-    
+    pckgManager.print(pckgManager.printLevel.message, "retriving package data from url: "..pckg_data )
+    local pckgFileRequest = http.get(pckg_data)
+    local pckgFileContent = pckgFileRequest.readAll()
+    pckgFileRequest.close()
+
+    local pckgFileData = textutils.unserializeJSON(pckgFileContent)
+
+    local FileLocation = pckgManager.installPaths[pckgFileData.type]
+
+    local files = {}
+    for file, url in pairs(pckgFileData.files) do
+        pckgManager.print(pckgManager.printLevel.message, "retriving file: "..file.." from url: "..url )
+        local fileRequest = http.get(url)
+
+        if not fileRequest then
+            pckgManager.print(pckgManager.printLevel.error, "failed to retrive file: "..file.." from url: "..url )
+            return 5, "failed to retrive file"
+        end
+
+        local fileContent = fileRequest.readAll()
+        fileRequest.close()
+
+        local filePath = FileLocation .. file
+
+        files[filePath] = fileContent
+        pckgManager.print(pckgManager.printLevel.message, "file: "..file.." retrived and saved to buffer" )
+    end
 
 
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
@@ -143,5 +169,14 @@ function pckgManager.sync() -- sync db from sources
     
 end
 
+function pckgManager.listAll()
+    local packages = {}
+    
+    for pckg, _ in pairs(pckgManager.dbContent) do
+        table.insert(packages, pckg)
+    end
+
+    return packages
+end
 
 return pckgManager

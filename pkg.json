@@ -1,10 +1,10 @@
 {
-    "version":0.1,
     "name":"pckg",
     "description":"pckg is an simple package manager made for craft-os",
-    "author":"cardboard os team",
+    "author":"cardboard os dev team",
+    "pckg_type":"application",
     "files":{
-        "main.lua":"",
-        "run.lua":""
+        "main.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua",
+        "run.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/run.lua"
     }
 }
