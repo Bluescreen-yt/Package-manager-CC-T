@@ -2,8 +2,8 @@
 local pckgManager = {}
 
 function pckgManager.init_enums()
-    pckgManager.debugLevels = { debug=0, warnings=1, errors=2, none=3 } -- enum for debugging level (debugLevel)
-    pckgManager.printLevel = { message=0, warning=1, error=2} -- print level for pckgManager.print function
+    pckgManager.debugLevels = { debug=0, success=2,warnings=3, errors=4, none=5 } -- enum for debugging level (debugLevel)
+    pckgManager.printLevel = { message=0, success=2, warning=3, error=4} -- print level for pckgManager.print function
     
 end
 
@@ -33,8 +33,9 @@ end
 local function prettyPrint(level, text ) -- pretty print msgs
     local levelData = {
         [0]={ icon="*", color="8" },
-        [1]={ icon="?", color="1" },
-        [2]={ icon="!", color="e" },
+        [1]={ icon="V", color="d" },
+        [2]={ icon="?", color="1" },
+        [3]={ icon="!", color="e" },
     }
 
     local Pre = " "..levelData[level].icon.." "
@@ -63,7 +64,7 @@ function pckgManager.init() -- init (load db etc etc)
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.init() - start" )
 
     if fs.exists(pckgManager.dbPath) then -- if db exists load it
-        pckgManager.print(pckgManager.printLevel.message, "db file found." )
+        pckgManager.print(pckgManager.printLevel.success, "db file found." )
     
         local DB_FILE = fs.open(pckgManager.dbPath, 'r') -- open db file
 
@@ -97,7 +98,7 @@ function pckgManager.install(package, version) -- install package
         pckgManager.print(pckgManager.printLevel.error, "package "..package.." not found" )
         return 2, "package not found"
     else
-        pckgManager.print(pckgManager.printLevel.message, "package found" )
+        pckgManager.print(pckgManager.printLevel.success, "package found" )
     end
 
     if version == "latest" then
@@ -147,9 +148,16 @@ function pckgManager.install(package, version) -- install package
         local filePath = fileLocation .. file
 
         files[filePath] = fileContent
-        pckgManager.print(pckgManager.printLevel.message, "file: "..file.." retrived and saved to buffer" )
+        pckgManager.print(pckgManager.printLevel.success, "file: "..file.." retrived and saved to buffer" )
     end
 
+    for file, content in pairs(files) do
+        pckgManager.print(pckgManager.printLevel.message, "saving file: "..file )
+        local fileHandle = fs.open(file, 'w')
+        fileHandle.write(content)
+        fileHandle.close()
+        pckgManager.print(pckgManager.printLevel.success, "file: "..file.." saved" )
+    end
 
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
