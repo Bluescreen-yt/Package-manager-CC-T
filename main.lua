@@ -124,7 +124,12 @@ function pckgManager.install(package, version) -- install package
 
     local pckgFileData = textutils.unserializeJSON(pckgFileContent)
 
-    local FileLocation = pckgManager.installPaths[pckgFileData.type]
+    local fileLocation = pckgManager.installPaths[pckgFileData.pckg_type]
+
+    if not fileLocation then
+        pckgManager.print(pckgManager.printLevel.error, "invalid package type: "..pckgFileData.pckg_type )
+        return 6, "invalid package type"
+    end
 
     local files = {}
     for file, url in pairs(pckgFileData.files) do
@@ -139,7 +144,7 @@ function pckgManager.install(package, version) -- install package
         local fileContent = fileRequest.readAll()
         fileRequest.close()
 
-        local filePath = FileLocation .. file
+        local filePath = fileLocation .. file
 
         files[filePath] = fileContent
         pckgManager.print(pckgManager.printLevel.message, "file: "..file.." retrived and saved to buffer" )
