@@ -2,8 +2,8 @@
 local pckgManager = {}
 
 function pckgManager.init_enums()
-    pckgManager.debugLevels = { debug=0, success=2,warnings=3, errors=4, none=5 } -- enum for debugging level (debugLevel)
-    pckgManager.printLevel = { message=0, success=2, warning=3, error=4} -- print level for pckgManager.print function
+    pckgManager.debugLevels = { debug=0, success=1,warnings=2, errors=3, none=4 } -- enum for debugging level (debugLevel)
+    pckgManager.printLevel = { message=0, success=1, warning=2, error=3} -- print level for pckgManager.print function
     
 end
 
@@ -33,8 +33,8 @@ end
 local function prettyPrint(level, text ) -- pretty print msgs
     local levelData = {
         [0]={ icon="*", color="8" },
-        [1]={ icon="?", color="1" },
-        [2]={ icon="V", color="d" },
+        [2]={ icon="?", color="1" },
+        [1]={ icon="V", color="d" },
         [3]={ icon="!", color="e" },
     }
 
