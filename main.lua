@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 
-=======
 local pckgManager = {}
 
 function pckgManager.init_enums()
@@ -147,4 +145,3 @@ end
 
 
 return pckgManager
->>>>>>> dev
