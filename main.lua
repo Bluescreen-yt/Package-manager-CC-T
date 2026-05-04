@@ -21,7 +21,7 @@ function pckgManager.init_config() -- initial default config
         library="/libs/" -- library
     }
 
-    
+
 
     -- dev stuff
     pckgManager.debugLevel = pckgManager.debugLevels.debug -- debug level
@@ -72,12 +72,54 @@ function pckgManager.init() -- init (load db etc etc)
         pckgManager.print(pckgManager.printLevel.warning, "no db file found" )
     end
 
-    pckgManager.print(pckgManager.printLevel.message, "pckgManager.init() - end" )
+    pckgManager.print(pckgManager.printLevel.message, "pckgManager.init - end" )
 end
 
 
 function pckgManager.install(package, version) -- install package
+    pckgManager.print(pckgManager.printLevel.message, "pckgManager.install( '"..package or "nil" .."', '".. version or "nil" .."' ) - start" )
+    if not package then
+        pckgManager.print(pckgManager.printLevel.error, "No package specified" )
+        return 1, "no package specified"
+    else
+        pckgManager.print(pckgManager.printLevel.message, "package: "..package)
+    end
+    if not version then
+        pckgManager.print(pckgManager.printLevel.warning, "No version specified, installing latest" )
+        version="latest"
+    else
+        pckgManager.print(pckgManager.printLevel.message, "version: "..version )
+    end
+
+    local pckgDB = pckgManager.dbContent[package]
+    if not pckgDB then
+        pckgManager.print(pckgManager.printLevel.error, "package "..package.." not found" )
+        return 2, "package not found"
+    else
+        pckgManager.print(pckgManager.printLevel.message, "package found" )
+    end
+
+    if version == "latest" then
+        version = pckgDB.latest
+
+        if not version then
+            pckgManager.print(pckgManager.printLevel.error, "could not get latest version" )
+            return 3, "could not get latest version"
+        end
+    end
+
+
+
+    local pckg_data = pckgDB[version]
+    if not pckg_data then
+        pckgManager.print(pckgManager.printLevel.error, "could not get "..version.." version of the package "..package )
+        return 4, "failed to retrive version data"
+    end
+
     
+
+
+    pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
 
 
