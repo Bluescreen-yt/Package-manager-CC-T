@@ -1,8 +1,11 @@
 local pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua")
-print(pckgCode.readAll())
-local pckg = loadstring(pckgCode.readAll())
+
+local pckg = load(pckgCode.readAll())
 pckgCode.close()
 
+pckg = pckg()
+
+pckg.init_enums()
 pckg.init_config()
 pckg.dbContent = { -- minimal db with pckg
     ["pckg"]={
