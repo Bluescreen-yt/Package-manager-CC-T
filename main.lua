@@ -33,8 +33,8 @@ end
 local function prettyPrint(level, text ) -- pretty print msgs
     local levelData = {
         [0]={ icon="*", color="8" },
-        [1]={ icon="V", color="d" },
-        [2]={ icon="?", color="1" },
+        [1]={ icon="?", color="1" },
+        [2]={ icon="V", color="d" },
         [3]={ icon="!", color="e" },
     }
 
