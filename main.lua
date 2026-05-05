@@ -204,7 +204,11 @@ function pckgManager.install(package, version) -- install package
         local success, result = pcall(
         
             function()
-                require(autorunPath)
+                local file = fs.open(autorunPath, 'r')
+                local autorunCode = file.readAll()
+                file.close()
+                local autorunFunc = load(autorunCode)
+                return autorunFunc()
             end
         
         )
