@@ -10,5 +10,8 @@
     },
     "requirements":{},
     "runnable":"run.lua",
-    "command_alias":"pckg"
+    "command_alias":"pckg",
+
+    "autorun_file":"main.lua",
+    "autorun_function":"pckgManager.fullinit()"
 }

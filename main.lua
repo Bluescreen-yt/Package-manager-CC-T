@@ -8,6 +8,9 @@ function pckgManager.header()
     pckgManager.print(pckgManager.printLevel.message, "https://github.com/Bluescreen-yt/Package-manager-CC-T" )
 end
 
+function pckgManager.setup()
+    
+end
 
 function pckgManager.init_enums()
     pckgManager.debugLevels = { debug=0, success=1,warnings=2, errors=3, none=4 } -- enum for debugging level (debugLevel)
@@ -194,7 +197,25 @@ function pckgManager.install(package, version) -- install package
         pckgManager.print(pckgManager.printLevel.success, "file: "..file.." saved" )
     end
 
+    if pckgFileData.autorun_file then
+        local autorunPath = fileLocation .. pckgFileData.autorun_file
+        local success, result = pcall(
+        
+            function()
+                require(autorunPath)
+            end
+        
+        )
+            
+        if (not success) and success ~= nil then
+            pckgManager.print(pckgManager.printLevel.error, "failes to require autorun file" )
+            return 8, "failed to require autorun file"
+        end
 
+        if result[pckgFileData.autorun_function] then
+            result[pckgFileData.autorun_function]()
+        end
+    end
 
     
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
