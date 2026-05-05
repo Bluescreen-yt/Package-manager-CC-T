@@ -1,11 +1,11 @@
-<p style="text-align:center">
+<div align="center">
     <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/docs/icon.png" width="350" />
-    <p style="text-align:left">
-    ![Latest release](https://img.shields.io/github/commit-activity/t/Bluescreen-yt/Package-manager-CC-T?style=flat-square)
-    ![Latest release](https://img.shields.io/github/contributors/Bluescreen-yt/Package-manager-CC-T?style=flat-square)
-    </p>
+    <div align="center">
+    ![Latest commit](https://img.shields.io/github/commit-activity/t/Bluescreen-yt/Package-manager-CC-T?style=flat-square)
+    ![contrib](https://img.shields.io/github/contributors/Bluescreen-yt/Package-manager-CC-T?style=flat-square)
+    </div>
 
-</p>
+</div>
 
 
 
@@ -21,8 +21,8 @@
 
 # how to install:
 ## a) directly from github (latest release):
+wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
 
-
-## b) using the pine store (might be outdated form time to time)
+## b) using the pine store (might be outdated from time to time)
 wget run https://pinestore.cc/d/216
 
