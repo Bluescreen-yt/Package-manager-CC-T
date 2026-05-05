@@ -1,6 +1,11 @@
-<div align="center">
-    ![]()
-</div>
+<p style="text-align:center">
+    <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/docs/icon.png" width="350" />
+    <p style="text-align:left">
+    ![Latest release](https://img.shields.io/github/commit-activity/t/Bluescreen-yt/Package-manager-CC-T?style=flat-square)
+    ![Latest release](https://img.shields.io/github/contributors/Bluescreen-yt/Package-manager-CC-T?style=flat-square)
+    </p>
+
+</p>
 
 
 
