@@ -80,20 +80,20 @@ end
 
 function pckgManager.install(package, version) -- install package
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install( '"..package .."', '".. version .."' ) - start" )
-    if not package then
+    if not package then -- if no package specified
         pckgManager.print(pckgManager.printLevel.error, "No package specified" )
         return 1, "no package specified"
     else
         pckgManager.print(pckgManager.printLevel.message, "package: "..package)
     end
-    if not version then
+    if not version then -- if no version specified then set it to latest
         pckgManager.print(pckgManager.printLevel.warning, "No version specified, installing latest" )
         version="latest"
     else
         pckgManager.print(pckgManager.printLevel.message, "version: "..version )
     end
 
-    local pckgDB = pckgManager.dbContent[package]
+    local pckgDB = pckgManager.dbContent[package] -- get package from database
     if not pckgDB then
         pckgManager.print(pckgManager.printLevel.error, "package "..package.." not found" )
         return 2, "package not found"
@@ -132,6 +132,8 @@ function pckgManager.install(package, version) -- install package
         return 6, "invalid package type"
     end
 
+    fileLocation = fileLocation .. package .. "/" -- add package name to file location
+
     local files = {}
     for file, url in pairs(pckgFileData.files) do
         pckgManager.print(pckgManager.printLevel.message, "retriving file: "..file.." from url: "..url )
@@ -151,6 +153,13 @@ function pckgManager.install(package, version) -- install package
         pckgManager.print(pckgManager.printLevel.success, "file: "..file.." retrived and saved to buffer" )
     end
 
+    files["pkg.json"] = pckgFileContent -- add pkg.json
+
+    for pckg, version in pairs(pckgFileData.requirements) do -- install all requirements
+        pckgManager.install(pckg, version)
+    end
+
+
     for file, content in pairs(files) do
         pckgManager.print(pckgManager.printLevel.message, "saving file: "..file )
         local fileHandle = fs.open(file, 'w')
@@ -158,6 +167,8 @@ function pckgManager.install(package, version) -- install package
         fileHandle.close()
         pckgManager.print(pckgManager.printLevel.success, "file: "..file.." saved" )
     end
+
+
 
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
