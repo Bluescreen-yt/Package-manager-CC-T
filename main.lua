@@ -125,6 +125,7 @@ function pckgManager.install(package, version) -- install package
 
     local pckgFileData = textutils.unserializeJSON(pckgFileContent)
 
+    
     if not pckgFileData then
         pckgManager.print(pckgManager.printLevel.error, "failed to retrive package data from url: "..pckg_data )
         return 7, "failed to retrive package data"
