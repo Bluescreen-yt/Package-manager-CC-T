@@ -4,6 +4,8 @@ local pckgManager = {}
 function pckgManager.init_enums()
     pckgManager.debugLevels = { debug=0, success=1,warnings=2, errors=3, none=4 } -- enum for debugging level (debugLevel)
     pckgManager.printLevel = { message=0, success=1, warning=2, error=3} -- print level for pckgManager.print function
+
+    pckgManager.version = 0.3
     
 end
 
@@ -40,7 +42,7 @@ local function prettyPrint(level, text ) -- pretty print msgs
 
     local Pre = " "..levelData[level].icon.." "
     local PreColor = string.rep(levelData[level].color, #Pre)
-    local msg = " " .. text
+    local msg = " " .. text .. " "
     local fullMsg = Pre .. msg
 
     term.blit( -- print
@@ -50,6 +52,10 @@ local function prettyPrint(level, text ) -- pretty print msgs
     )
 
     print() -- new line
+end
+
+function pckgManager.info()
+    return pckgManager.version
 end
 
 
@@ -125,7 +131,7 @@ function pckgManager.install(package, version) -- install package
 
     local pckgFileData = textutils.unserializeJSON(pckgFileContent)
 
-    
+
     if not pckgFileData then
         pckgManager.print(pckgManager.printLevel.error, "failed to retrive package data from url: "..pckg_data )
         return 7, "failed to retrive package data"
