@@ -182,7 +182,7 @@ function pckgManager.install(package, version) -- install package
         pckgManager.print(pckgManager.printLevel.success, "file: "..file.." retrived and saved to buffer" )
     end
 
-    files["pkg.json"] = pckgFileContent -- add pkg.json
+    files["pkg.json"] = fileLocation ..  pckgFileContent -- add pkg.json
 
     for pckg, version in pairs(pckgFileData.requirements) do -- install all requirements
         pckgManager.install(pckg, version)
