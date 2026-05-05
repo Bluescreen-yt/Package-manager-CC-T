@@ -6,7 +6,7 @@
     "pckg_type":"application",
     "files":{
         "main.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua",
-        "run.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/run.lua",
+        "run.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/run.lua"
     },
     "requirements":{},
     "runnable":"run.lua",
