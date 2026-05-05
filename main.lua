@@ -199,6 +199,8 @@ function pckgManager.install(package, version) -- install package
 
     if pckgFileData.autorun_file then
         local autorunPath = fileLocation .. pckgFileData.autorun_file
+
+        pckgManager.print(pckgManager.printLevel.message, "autorun file: "..autorunPath )
         local success, result = pcall(
         
             function()
@@ -208,7 +210,10 @@ function pckgManager.install(package, version) -- install package
         )
             
         if (not success) and success ~= nil then
-            pckgManager.print(pckgManager.printLevel.error, "failes to require autorun file" )
+            pckgManager.print(pckgManager.printLevel.error, "failed to require autorun file" )
+
+            print("Error: "..tostring(result))
+
             return 8, "failed to require autorun file"
         end
 
