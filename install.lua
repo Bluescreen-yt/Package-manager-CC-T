@@ -1,12 +1,20 @@
 -- wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
 
+local pckgCode
+
 if fs.exists("/bin/pckg") then
     print("pckg is already installed! updating..")
     local pckgCodeFile = fs.open("/bin/pckg", "r")
-    local pckgCode = pckgCodeFile.readAll()
-    pckgCodeFile.close()
+
+    if not pckgCodeFile then
+        print("failed to read existing pckg code! updating with online version..")
+        pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua")
+    else
+        pckgCode = pckgCodeFile.readAll()
+        pckgCodeFile.close()
+    end
 else
-    local pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua")
+    pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua")
 end
 
 
