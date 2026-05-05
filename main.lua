@@ -1,6 +1,14 @@
 -- WHY IS THERE ODD HEADER AND FOOTER HERE???
 local pckgManager = {}
 
+function pckgManager.header()
+    pckgManager.print(pckgManager.printLevel.message, "pckg v"..pckgManager.version )
+    pckgManager.print(pckgManager.printLevel.message, "made by cardboard os dev team" )
+    pckgManager.print(pckgManager.printLevel.message, "thank you for using pckg! have a nice day" )
+    pckgManager.print(pckgManager.printLevel.message, "https://github.com/Bluescreen-yt/Package-manager-CC-T" )
+end
+
+
 function pckgManager.init_enums()
     pckgManager.debugLevels = { debug=0, success=1,warnings=2, errors=3, none=4 } -- enum for debugging level (debugLevel)
     pckgManager.printLevel = { message=0, success=1, warning=2, error=3} -- print level for pckgManager.print function
@@ -31,6 +39,11 @@ function pckgManager.init_config() -- initial default config
 
 end
 
+function pckgManager.fullinit()
+    pckgManager.init_enums()
+    pckgManager.init_config()
+    pckgManager.header()
+end
 
 local function prettyPrint(level, text ) -- pretty print msgs
     local levelData = {
@@ -183,26 +196,31 @@ function pckgManager.install(package, version) -- install package
 
 
 
+    
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
 
 
 function pckgManager.remove(package) -- remove packages
     
+    
 end
 
 
 function pckgManager.list() -- list all installed packages
+    
     
 end
 
 
 function pckgManager.search(package) -- search for package in db
     
+    
 end
 
 
 function pckgManager.sync() -- sync db from sources
+
     
 end
 
@@ -215,5 +233,7 @@ function pckgManager.listAll()
 
     return packages
 end
+
+
 
 return pckgManager
