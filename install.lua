@@ -32,4 +32,5 @@ pckg.dbContent = { -- minimal db with pckg
 
     }
 }
+pckg.header()
 pckg.install("pckg", "X")
