@@ -34,3 +34,5 @@ pckg.dbContent = { -- minimal db with pckg
 }
 pckg.header()
 pckg.install("pckg", "X")
+shell.setAlias("pckg", "/bin/pckg")
+print("pckg installed successfully! you can now use pckg")

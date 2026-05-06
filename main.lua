@@ -34,7 +34,10 @@ function pckgManager.header()
 end
 
 function pckgManager.setup()
-    print(" INIT !!!!!!!!!!!! AUTORUN WORKS!")
+    pckgManager.fullinit()
+
+    local defaultSources = {}
+    table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/pkg.json")
 end
 
 function pckgManager.init_enums()
@@ -309,8 +312,6 @@ end
 
 
 function pckgManager.remove(package) -- remove packages
-    
-    
 end
 
 function pckgManager.saveAliases() -- remove packages
@@ -393,6 +394,7 @@ function pckgManager.loadAliases()
         for alias, file in pairs(aliases) do
             if shell then                
                 shell.setAlias(alias, file)
+                pckgManager.print(pckgManager.printLevel.success, "set alias: "..alias.." = "..file )
             else
                 pckgManager.print(pckgManager.printLevel.warning, "shell not found, are you running with custom globals / env?" )
             end
