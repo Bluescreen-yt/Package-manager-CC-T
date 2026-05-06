@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------------------------------------
 -- simple PaCKaGe manager v0.3 made by cardboard os dev team 
 --
--- join our discord for news and updates + guides and welcoming community: https://discord.gg/BHG7FBDdjs
+-- join our discord for news and updates + guides and welcoming community: dsc.gg/cardboardos
 --
 -------------------------------------------------------------------------------------------------------------
 -- #### ####      ###  ####
@@ -24,8 +24,11 @@ local pckgManager = {}
 function pckgManager.header()
     pckgManager.print(pckgManager.printLevel.message, "pckg v"..pckgManager.version )
     pckgManager.print(pckgManager.printLevel.message, "made by cardboard os dev team" )
-    pckgManager.print(pckgManager.printLevel.message, "thank you for using pckg! have a nice day" )
+    pckgManager.print(pckgManager.printLevel.message, "thank you for using pckg! have a nice day ;p" )
     pckgManager.print(pckgManager.printLevel.message, "https://github.com/Bluescreen-yt/Package-manager-CC-T" )
+    pckgManager.print(pckgManager.printLevel.message, "feel free to modify / help us out with code" )
+    pckgManager.print(pckgManager.printLevel.message, "any help / feedback / idea is appreciated!" )
+    pckgManager.print(pckgManager.printLevel.message, "join our discord for news and updates + guides and welcoming community: dsc.gg/cardboardos" )
 end
 
 function pckgManager.setup()
