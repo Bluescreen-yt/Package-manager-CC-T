@@ -168,6 +168,9 @@ function pckgManager.install(package, version) -- install package
 
     for file, url in pairs(pckgFileData.files) do
         -- make separate process for getting files cuz SPEED ( i think idk )
+
+        pckgManager.print(pckgManager.printLevel.message, "inserting download func for: "..file.." into funcs")
+
         table.insert(funcs, function() -- add func to funcs table
             
             pckgManager.print(pckgManager.printLevel.message, "retriving file: "..file.." from url: "..url )
