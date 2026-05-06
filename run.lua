@@ -2,5 +2,19 @@ local pckg = require("main")
 pckg.fullinit()
 pckg.debugLevel = pckg.debugLevel.none
 
-if args[1] == "update" then
-end
+local commands = {
+    update=nil,
+    install=nil,
+    remove=nil,
+    list=pckg.list,
+    listAll=function ()
+        local Packages = pckg.listAll()
+
+        for _, package in pairs(Packages) do
+            print(package)
+        end
+    end,
+    sync=pckg.sync,
+}
+
+commands[args[1]](table.unpack(args, 2))
