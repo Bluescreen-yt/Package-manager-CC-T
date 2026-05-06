@@ -421,8 +421,4 @@ local function _test()
     pckgManager.install("pckg", "X")
 end
 
-
-
--- _test()
-
 return pckgManager
