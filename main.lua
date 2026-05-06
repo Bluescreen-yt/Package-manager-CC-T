@@ -391,8 +391,11 @@ end
 function pckgManager.loadAliases()
     for package, aliases in pairs(pckgManager.aliases) do
         for alias, file in pairs(aliases) do
-
-            shell.setAlias(alias, file)
+            if shell then                
+                shell.setAlias(alias, file)
+            else
+                pckgManager.print(pckgManager.printLevel.warning, "shell not found, are you running with custom globals / env?" )
+            end
         end
     end
 end
