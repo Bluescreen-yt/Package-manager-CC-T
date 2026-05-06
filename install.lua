@@ -4,7 +4,7 @@ local pckgCode
 
 if fs.exists("/bin/pckg") then
     print("pckg is already installed! updating..")
-    local pckgCodeFile = fs.open("/bin/pckg", "r")
+    local pckgCodeFile = fs.open("/bin/pckg/main.lua", "r")
 
     if not pckgCodeFile then
         print("failed to read existing pckg code! updating with online version..")
