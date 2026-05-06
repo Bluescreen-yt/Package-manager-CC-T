@@ -72,7 +72,6 @@ end
 function pckgManager.fullinit()
     pckgManager.init_enums()
     pckgManager.init_config()
-    pckgManager.header()
 end
 
 
@@ -297,12 +296,14 @@ function pckgManager.install(package, version) -- install package
     end
 
     pckgManager.aliases[package] = {}
+    pckgManager.print(pckgManager.printLevel.success, "initialized pckgManager.aliases."..package )
     for alias, file in pairs(pckgFileData.aliases) do
         pckgManager.aliases[package][alias] = fileLocation .. file
-        pckgManager.print(pckgManager.printLevel.success, "alias: "..alias.." -> "..fileLocation .. file )
+        pckgManager.print(pckgManager.printLevel.success, "aliased: pckgManager.aliases."..package.."."..alias.." = "..fileLocation .. file )
     end
 
-    loadAliases()
+    pckgManager.saveAliases()
+    pckgManager.loadAliases()
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
 
@@ -387,7 +388,7 @@ function pckgManager.sync() -- sync db from sources
 
 end
 
-function loadAliases()
+function pckgManager.loadAliases()
     for package, aliases in pairs(pckgManager.aliases) do
         for alias, file in pairs(aliases) do
 
