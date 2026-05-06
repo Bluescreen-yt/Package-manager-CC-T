@@ -199,14 +199,22 @@ function pckgManager.install(package, version) -- install package
         pckgManager.install(pckg, version)
     end
 
+    funcs={}
 
     for file, content in pairs(files) do
-        pckgManager.print(pckgManager.printLevel.message, "saving file: "..file )
-        local fileHandle = fs.open(file, 'w')
-        fileHandle.write(content)
-        fileHandle.close()
-        pckgManager.print(pckgManager.printLevel.success, "file: "..file.." saved" )
+        pckgManager.print(pckgManager.printLevel.message, "inserting save func for: "..file.." into funcs")
+
+        table.insert(funcs, function() -- add func to funcs table
+
+            pckgManager.print(pckgManager.printLevel.message, "saving file: "..file )
+            local fileHandle = fs.open(file, 'w')
+            fileHandle.write(content)
+            fileHandle.close()
+            pckgManager.print(pckgManager.printLevel.success, "file: "..file.." saved" )
+        end)
     end
+
+    parallel.waitForAll(table.unpack(funcs)) -- run all funcs at same time
 
     if pckgFileData.autorun_file then
         local autorunPath = fileLocation .. pckgFileData.autorun_file
