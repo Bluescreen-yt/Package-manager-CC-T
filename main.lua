@@ -37,7 +37,16 @@ function pckgManager.setup()
     pckgManager.fullinit()
 
     local defaultSources = {}
-    table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/pkg.json")
+    table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/bluesPackages/refs/heads/main/core.json")
+
+    local file = ""
+    for _, source in ipairs(defaultSources) do
+        file = file .. source .. "\n"
+    end
+
+    local sourcesFile = fs.open(pckgManager.sourcesFile, 'w')
+    sourcesFile.write(file)
+    sourcesFile.close()
 end
 
 function pckgManager.init_enums()
