@@ -1,6 +1,6 @@
 local pckg = require("main")
 pckg.fullinit()
-pckg.debugLevel = pckg.debugLevel.none
+pckg.debugLevel = pckg.debugLevels.none
 
 local commands = {
     update=nil,
