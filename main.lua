@@ -1,4 +1,24 @@
--- WHY IS THERE ODD HEADER AND FOOTER HERE???
+-------------------------------------------------------------------------------------------------------------
+-- simple PaCKaGe manager v0.3 made by cardboard os dev team 
+--
+-- join our discord for news and updates + guides and welcoming community: https://discord.gg/BHG7FBDdjs
+--
+-------------------------------------------------------------------------------------------------------------
+-- #### ####      ###  ####
+-- #### ## #      ## # ## # # 
+--  ##  ## #      ## # ## #  
+--  ##  ####      ###  #### #
+--           ( to do: )
+--
+--
+--
+--
+--
+--
+--
+--
+-------------------------------------------------------------------------------------------------------------
+
 local pckgManager = {}
 
 function pckgManager.header()
@@ -26,6 +46,7 @@ function pckgManager.init_config() -- initial default config
     -- Database
     pckgManager.dbPath    = "/etc/pckg/db.json" -- path to db
     pckgManager.dbContent = {} -- content in db
+    pckgManager.sourcesFile = "/etc/pckg/sources.json" -- path to sources file
 
     -- Install paths
     pckgManager.installPaths = {
@@ -35,7 +56,8 @@ function pckgManager.init_config() -- initial default config
         library="/libs/" -- library
     }
 
-
+    pckgManager.aliasPath = "/etc/pckg/alias.json" -- path to file with aliases
+    pckgManager.aliases = {} --all loaded aliases
 
     -- dev stuff
     pckgManager.debugLevel = pckgManager.debugLevels.debug -- debug level
@@ -47,6 +69,7 @@ function pckgManager.fullinit()
     pckgManager.init_config()
     pckgManager.header()
 end
+
 
 local function prettyPrint(level, text ) -- pretty print msgs
     local levelData = {
@@ -85,6 +108,7 @@ end
 function pckgManager.init() -- init (load db etc etc)
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.init() - start" )
 
+    pckgManager.print(pckgManager.printLevel.message, "loading db file" )
     if fs.exists(pckgManager.dbPath) then -- if db exists load it
         pckgManager.print(pckgManager.printLevel.success, "db file found." )
     
@@ -92,8 +116,22 @@ function pckgManager.init() -- init (load db etc etc)
 
         pckgManager.dbContent = textutils.unserializeJSON(DB_FILE.readAll()) -- load db content
         DB_FILE.close() -- close file
+
+        pckgManager.print(pckgManager.printLevel.success, "done loading db!")
     else -- if no db file found
         pckgManager.print(pckgManager.printLevel.warning, "no db file found" )
+    end
+
+
+    pckgManager.print(pckgManager.printLevel.message, "loading aliases file" )
+    if fs.exists(pckgManager.aliasPath) then -- if alias list thingy file exists load it
+    
+        local ALIAS_FILE = fs.open(pckgManager.aliasPath, 'r') -- open alias file
+        pckgManager.aliases = textutils.unserializeJSON(ALIAS_FILE.readAll()) -- load alias content
+        ALIAS_FILE.close() -- close file
+        pckgManager.print(pckgManager.printLevel.success, "done loading aliases!")
+    else -- if no alias file found
+        pckgManager.print(pckgManager.printLevel.warning, "no alias file found" )
     end
 
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.init - end" )
@@ -216,6 +254,12 @@ function pckgManager.install(package, version) -- install package
 
     parallel.waitForAll(table.unpack(funcs)) -- run all funcs at same time
 
+    for alias, file in pairs(pckgFileData.aliases) do
+        pckgManager.aliases[alias] = fileLocation .. file
+        pckgManager.print(pckgManager.printLevel.success, "added "..alias.." to aliases" )
+    end
+
+
     if pckgFileData.autorun_file then
         local autorunPath = fileLocation .. pckgFileData.autorun_file
 
@@ -247,7 +291,12 @@ function pckgManager.install(package, version) -- install package
         end
     end
 
-    
+    for alias, file in pairs(pckgFileData.aliases) do
+        pckgManager.aliases[alias] = fileLocation .. file
+        pckgManager.print(pckgManager.printLevel.success, "alias: "..alias.." -> "..fileLocation .. file )
+    end
+
+    loadAliases()
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
 
@@ -255,6 +304,12 @@ end
 function pckgManager.remove(package) -- remove packages
     
     
+end
+
+function pckgManager.saveAliases() -- remove packages
+    local aliasFile = fs.open(pckgManager.aliasPath, 'w')
+    aliasFile.write(textutils.serializeJSON(pckgManager.aliases))
+    aliasFile.close()
 end
 
 
@@ -277,8 +332,61 @@ end
 
 
 function pckgManager.sync() -- sync db from sources
+    local sourcesFile = fs.open(pckgManager.sourcesFile, 'r')
 
-    
+    local sourcesData = {}
+
+    while true do
+        local line = sourcesFile.readLine()
+        if not line then break end
+
+        local SourceContent = http.get(line)
+        if not SourceContent then
+            pckgManager.print(pckgManager.printLevel.error, "failed to retrive source: "..line )
+            return 9, "failed to retrive source"
+        end
+
+        local sourceData = textutils.unserializeJSON(SourceContent.readAll())
+        SourceContent.close()
+
+        table.insert(sourcesData, sourceData)
+    end
+
+    sourcesFile.close()
+
+    for _, sourceData in pairs(sourcesData) do
+        for pckg, data in pairs(sourceData) do
+            local Data = {}
+            
+            for _VERSION, _URL in pairs(data) do -- merge version togheter to make big mass of versions avalible
+                if _VERSION == "latest" then
+                    if (not Data.latest) or tonumber(_URL) > tonumber(Data.latest) then
+                        Data.latest = _URL
+                    end
+                else
+                    Data[_VERSION] = _URL
+                end
+            end
+
+            pckgManager.dbContent[pckg] = Data
+            
+        end
+    end
+
+
+
+    local dbFile = fs.open(pckgManager.dbPath, 'w')
+    dbFile.write(textutils.serializeJSON(pckgManager.dbContent))
+    dbFile.close()
+
+end
+
+function loadAliases()
+    for package, aliases in pairs() do
+        for alias, file in pairs(aliases) do
+            shell.setAlias(alias, file)
+        end
+    end
 end
 
 function pckgManager.listAll()

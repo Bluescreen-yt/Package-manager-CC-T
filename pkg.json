@@ -9,8 +9,9 @@
         "run.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/run.lua"
     },
     "requirements":{},
-    "runnable":"run.lua",
-    "command_alias":"pckg",
+    "aliases":{
+        "pckg":"run.lua"
+    },
 
     "autorun_file":"main.lua",
     "autorun_function":"pckgManager.fullinit()"

@@ -29,6 +29,7 @@ pckg.dbContent = { -- minimal db with pckg
     ["pckg"]={
         latest="X",
         X="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/pkg.json"
+
     }
 }
 pckg.install("pckg", "X")
