@@ -296,8 +296,9 @@ function pckgManager.install(package, version) -- install package
         end
     end
 
+    pckgManager.aliases[package] = {}
     for alias, file in pairs(pckgFileData.aliases) do
-        pckgManager.aliases[alias] = fileLocation .. file
+        pckgManager.aliases[package][alias] = fileLocation .. file
         pckgManager.print(pckgManager.printLevel.success, "alias: "..alias.." -> "..fileLocation .. file )
     end
 
@@ -389,6 +390,7 @@ end
 function loadAliases()
     for package, aliases in pairs(pckgManager.aliases) do
         for alias, file in pairs(aliases) do
+
             shell.setAlias(alias, file)
         end
     end
@@ -404,6 +406,23 @@ function pckgManager.listAll()
     return packages
 end
 
+--- test
+local function _test()
+    pckgManager.init_enums()
+    pckgManager.init_config()
+    pckgManager.dbContent = { -- minimal db with pckg
+        ["pckg"]={
+            latest="X",
+            X="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/pkg.json"
 
+        }
+    }
+    pckgManager.header()
+    pckgManager.install("pckg", "X")
+end
+
+
+
+_test()
 
 return pckgManager
