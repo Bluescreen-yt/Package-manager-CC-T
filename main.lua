@@ -382,7 +382,7 @@ function pckgManager.sync() -- sync db from sources
 end
 
 function loadAliases()
-    for package, aliases in pairs() do
+    for package, aliases in pairs(pckgManager.aliases) do
         for alias, file in pairs(aliases) do
             shell.setAlias(alias, file)
         end
