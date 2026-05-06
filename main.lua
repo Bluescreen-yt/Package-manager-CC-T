@@ -164,23 +164,31 @@ function pckgManager.install(package, version) -- install package
     fileLocation = fileLocation .. package .. "/" -- add package name to file location
 
     local files = {}
+    local funcs={} -- funcs to run
+
     for file, url in pairs(pckgFileData.files) do
-        pckgManager.print(pckgManager.printLevel.message, "retriving file: "..file.." from url: "..url )
-        local fileRequest = http.get(url)
+        -- make separate process for getting files cuz SPEED ( i think idk )
+        table.insert(funcs, function() -- add func to funcs table
+            
+            pckgManager.print(pckgManager.printLevel.message, "retriving file: "..file.." from url: "..url )
+            local fileRequest = http.get(url)
 
-        if not fileRequest then
-            pckgManager.print(pckgManager.printLevel.error, "failed to retrive file: "..file.." from url: "..url )
-            return 5, "failed to retrive file"
-        end
+            if not fileRequest then
+                pckgManager.print(pckgManager.printLevel.error, "failed to retrive file: "..file.." from url: "..url )
+                return 5, "failed to retrive file"
+            end
 
-        local fileContent = fileRequest.readAll()
-        fileRequest.close()
+            local fileContent = fileRequest.readAll()
+            fileRequest.close()
 
-        local filePath = fileLocation .. file
+            local filePath = fileLocation .. file
 
-        files[filePath] = fileContent
-        pckgManager.print(pckgManager.printLevel.success, "file: "..file.." retrived and saved to buffer" )
+            files[filePath] = fileContent
+            pckgManager.print(pckgManager.printLevel.success, "file: "..file.." retrived and saved to buffer" )
+        end)
     end
+
+    parallel.waitForAll(table.unpack(funcs)) -- run all funcs at same time
 
     files[fileLocation ..  "pkg.json"] = pckgFileContent -- add pkg.json
 
