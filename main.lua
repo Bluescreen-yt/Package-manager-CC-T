@@ -9,7 +9,7 @@ function pckgManager.header()
 end
 
 function pckgManager.setup()
-    
+    print(" INIT !!!!!!!!!!!! AUTORUN WORKS!")
 end
 
 function pckgManager.init_enums()
@@ -222,7 +222,9 @@ function pckgManager.install(package, version) -- install package
         end
 
         if result[pckgFileData.autorun_function] then
+            pckgManager.print(pckgManager.printLevel.message, "running autorun function..." )
             result[pckgFileData.autorun_function]()
+            pckgManager.print(pckgManager.printLevel.success, "autorun function executed" )
         end
     end
 
@@ -238,7 +240,13 @@ end
 
 
 function pckgManager.list() -- list all installed packages
-    
+    for _, t in pairs(pckgManager.installPaths) do
+        local pckgs = fs.list(t)
+
+        for _, pkg in pairs(pckgs) do
+            print(pkg)
+        end
+    end
     
 end
 
