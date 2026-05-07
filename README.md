@@ -24,6 +24,9 @@
 
 </b>
 
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" /><br><br>
+join our [discord](https://dsc.gg/cardboardos) here
+
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" /> 
 
 # Installation:
