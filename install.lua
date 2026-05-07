@@ -31,5 +31,5 @@ pckg.dbContent = { -- minimal db with pckg
 }
 pckg.header()
 pckg.install("pckg", "X")
-shell.setAlias("pckg", "/bin/pckg")
+shell.setAlias("pckg", "/bin/pckg/run.lua")
 print("pckg installed successfully! you can now use pckg")
