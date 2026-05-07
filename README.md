@@ -7,17 +7,9 @@
 
 </div>
 
-
+---
 
 # pckg - simple package manager for computercraft:tweaks
-
-
-
-
-
-
-
-
 
 # how to install:
 ## a) directly from github (latest release):
@@ -26,3 +18,4 @@ wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/re
 ## b) using the pine store (might be outdated from time to time)
 wget run https://pinestore.cc/d/216
 
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ExamplePKG.png" /> 

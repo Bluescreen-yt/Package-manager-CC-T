@@ -14,5 +14,5 @@
     },
 
     "autorun_file":"main.lua",
-    "autorun_function":"pckgManager.setup()"
+    "autorun_function":"setup"
 }
