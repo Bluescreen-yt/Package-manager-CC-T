@@ -2,7 +2,8 @@ local pckg = require("main")
 pckg.fullinit()
 pckg.debugLevel = pckg.debugLevels.debug
 
-local commands = {
+local commands
+commands = {
     update=nil,
     createStartupFile=function ()
         if fs.exists("/startup.lua") then
@@ -22,7 +23,13 @@ local commands = {
     end,
     install=nil,
     remove=nil,
-    loadAliases=pckg.loadAliases,
+    loadAliases=function ()
+        for command, _ in pairs(commands) do
+            shell.setAlias("pckg "..command, "/bin/pckg/run.lua "..command)
+        end
+    pckg.loadAliases()
+    end,
+
     help=nil,
     list=pckg.list,
     listAll=function ()
