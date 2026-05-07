@@ -1,6 +1,7 @@
 -- wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
 
 local pckgCode
+local Branch = "main"
 
 if fs.exists("/bin/pckg") then
     print("pckg is already installed! updating..")
@@ -8,10 +9,10 @@ if fs.exists("/bin/pckg") then
 
     if not pckgCodeFile then
         print("failed to read existing pckg code! updating with online version..")
-        pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua")
+        pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/"..Branch.."/main.lua")
     end
 else
-    pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua")
+    pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/"..Branch.."/main.lua")
 end
 
 
@@ -25,7 +26,7 @@ pckg.init_config()
 pckg.dbContent = { -- minimal db with pckg
     ["pckg"]={
         latest="X",
-        X="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/pkg.json"
+        X="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/"..Branch.."/pkg.json"
 
     }
 }
