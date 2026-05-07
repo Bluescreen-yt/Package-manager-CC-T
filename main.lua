@@ -75,7 +75,7 @@ function pckgManager.init_config() -- initial default config
 
     -- installed packages db
     pckgManager.installeddb = {}
-    pckgManager.installeddbPath = "/etc/pckg/installed.json"
+    pckgManager.installeddb = "/etc/pckg/installed.json"
 
     -- aliases
     pckgManager.aliasPath = "/etc/pckg/alias.json" -- path to file with aliases
@@ -320,7 +320,7 @@ function pckgManager.install(package, version) -- install package
         pckgManager.print(pckgManager.printLevel.success, "aliased: pckgManager.aliases."..package.."."..alias.." = "..fileLocation .. file )
     end
 
-    installeddb[package] = {
+    pckgManager.installeddb[package] = {
         version = version,
         install_path = fileLocation,
     }
@@ -333,7 +333,7 @@ end
 
 function pckgManager.loadInstalled()
     local installedDbFile = fs.open(pckgManager.installeddbPath, 'r')
-    installeddb = textutils.unserializeJSON(installedDbFile.readAll())
+    pckgManager.installeddb = textutils.unserializeJSON(installedDbFile.readAll())
     installedDbFile.close()
 end
 
@@ -344,8 +344,8 @@ function pckgManager.saveInstalled()
 end
 
 function pckgManager.remove(package) -- remove packages
-    fs.delete(installeddb[package].install_path) -- delete package files
-    installeddb[package] = nil -- remove from installed db
+    fs.delete(pckgManager.installeddb[package].install_path) -- delete package files
+    pckgManager.installeddb[package] = nil -- remove from installed db
     for alias, _ in pairs(pckgManager.aliases[package]) do -- remove aliases
         shell.clearAlias(alias)
     end
