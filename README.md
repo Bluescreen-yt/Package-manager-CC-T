@@ -1,8 +1,8 @@
 <div align="center">
     <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/icon.png" width="350" />
     <div align="center">
-    ![Latest commit](https://img.shields.io/github/commit-activity/t/Bluescreen-yt/Package-manager-CC-T?style=flat-square)
-    ![contrib](https://img.shields.io/github/contributors/Bluescreen-yt/Package-manager-CC-T?style=flat-square)
+    <img src="https://img.shields.io/github/commit-activity/t/Bluescreen-yt/Package-manager-CC-T?style=flat-square" />
+    <img src="https://img.shields.io/github/contributors/Bluescreen-yt/Package-manager-CC-T?style=flat-square" />
     </div>
 
 </div>
