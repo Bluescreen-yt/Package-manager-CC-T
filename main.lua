@@ -63,7 +63,7 @@ function pckgManager.init_config() -- initial default config
     -- Database
     pckgManager.dbPath    = "/etc/pckg/db.json" -- path to db
     pckgManager.dbContent = {} -- content in db
-    pckgManager.sourcesFile = "/etc/pckg/sources.json" -- path to sources file
+    pckgManager.sourcesFile = "/etc/pckg/sources.txt" -- path to sources file
 
     -- Install paths
     pckgManager.installPaths = {

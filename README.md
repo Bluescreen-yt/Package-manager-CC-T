@@ -47,5 +47,12 @@ example of pkg.json file:
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ExamplePKG.png" /> 
 
 
+core.json is list of packages and versions
+to add another source (core.json) you need to edit `/etc/pckg/sources.txt`
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ExampleCORE.png" /> 
+example of core.json file:
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ExampleCORE.png" />
+
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
+
+if you want to publish package to official source please make ticket on discord.
