@@ -17,4 +17,4 @@ local commands = {
     sync=pckg.sync,
 }
 
-commands[args[1]](table.unpack(args, 2))
+commands[arg[1]](table.unpack(arg, 2))

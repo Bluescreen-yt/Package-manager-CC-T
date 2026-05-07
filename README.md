@@ -21,6 +21,7 @@
 - 🏅 Package requirements support
 - 🗃️ Multifile package support
 - 📑 Multiple package versions support
+- 🔓 Open source ( ofc )
 
 </b>
 
