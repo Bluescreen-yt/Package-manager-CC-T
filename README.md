@@ -30,7 +30,7 @@ join our [discord](https://dsc.gg/cardboardos) here
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" /> 
 
 # Installation:
-```craft-os
+```typescript
 wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
 ```
 <B> or using pine store</B>
@@ -81,3 +81,16 @@ if you want to publish package to official source please make ticket on discord.
 | ⚫ | add list all packages avalible command |  |
 | 🔵 | create pinestore page |  |
 | ⚫ | add pinestore support |  |
+| ⚫ | design easier / better way of publishing packages |  |
+
+
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
+
+# FAQ:
+- none - feel free to ask questions
+
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
+
+# Known issues:
+
+1. aliases not working

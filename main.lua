@@ -436,4 +436,21 @@ local function _test()
     pckgManager.install("pckg", "X")
 end
 
+
+
+-- pinestore support
+pckgManager.PSS = {} -- Pine Store Support
+
+function pckgManager.PSS.getAllProjects()
+    local r = http.get("https://pinestore.cc/api/projects")
+    local res = textutils.unserializeJSON(r.readAll())
+    r.close()
+    return res
+end
+
+
+
+
+
+
 return pckgManager
