@@ -56,3 +56,28 @@ example of core.json file:
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 if you want to publish package to official source please make ticket on discord.
+
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ExamplePKG.png" /> 
+
+# TO DO:
+
+
+| ⚫ | ⚪ | 🔵 | ⭕ |
+| --- | --- | --- | --- |
+| to do | in progress | done | canceled
+
+| state | action | comments |
+| --- | --- | --- |
+| 🔵 | create repo |  |
+| 🔵 | add install function |  |
+| ⚪ | add remove function |  |
+| ⚪ | add install command |  |
+| ⚪ | add remove command |  |
+| ⚫ | add search function |  |
+| ⚫ | add search command |  |
+| ⚫ | add list function |  |
+| ⚫ | add list command |  |
+| 🔵 | add list all packages avalible function |  |
+| ⚫ | add list all packages avalible command |  |
+| 🔵 | create pinestore page |  |
+| ⚫ | add pinestore support |  |
