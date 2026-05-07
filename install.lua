@@ -7,7 +7,7 @@ if fs.exists("/bin/pckg") then
     print("pckg is already installed! updating..")
     local pckgCode = fs.open("/bin/pckg/main.lua", "r")
 
-    if not pckgCodeFile then
+    if not pckgCode then
         print("failed to read existing pckg code! updating with online version..")
         pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/"..Branch.."/main.lua")
     end
