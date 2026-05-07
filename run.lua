@@ -35,7 +35,7 @@ commands = {
 
     help=nil,
     list=function ()
-        for _, pkg in ipairs(pckgManager.list()) do
+        for _, pkg in ipairs(pckg.list()) do
             print(pkg)
         end
     end,

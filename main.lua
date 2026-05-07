@@ -320,9 +320,9 @@ function pckgManager.install(package, version) -- install package
         pckgManager.print(pckgManager.printLevel.success, "aliased: pckgManager.aliases."..package.."."..alias.." = "..fileLocation .. file )
     end
 
-    pckgManager.installeddb[package] = {
+    pckgManager.installeddb[package] = { -- add pckg to list of installed packages
         version = version,
-        install_path = fileLocation,
+        install_path = fileLocation
     }
 
     pckgManager.saveAliases()
