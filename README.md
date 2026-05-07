@@ -38,5 +38,14 @@ wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/re
 ```craft-os
 wget run https://pinestore.cc/d/216
 ```
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
+# Publishing: <b>
+pkg.json is information about your package like, for example: name, version, description, author, type of package
+
+example of pkg.json file:
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ExamplePKG.png" /> 
+
+
+
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ExampleCORE.png" /> 
