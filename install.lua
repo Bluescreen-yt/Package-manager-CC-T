@@ -9,9 +9,6 @@ if fs.exists("/bin/pckg") then
     if not pckgCodeFile then
         print("failed to read existing pckg code! updating with online version..")
         pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua")
-    else
-        pckgCode = pckgCodeFile.readAll()
-        pckgCodeFile.close()
     end
 else
     pckgCode = http.get("https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua")
