@@ -365,13 +365,13 @@ end
 
 
 function pckgManager.list() -- list all installed packages
-    for _, t in pairs(pckgManager.installPaths) do
-        local pckgs = fs.list(t)
-
-        for _, pkg in pairs(pckgs) do
-            print(pkg)
-        end
+    local packages = {}
+    
+    for package, _ in pairs(installeddb) do
+        table.insert(packages, package)
     end
+
+    return packages
     
 end
 

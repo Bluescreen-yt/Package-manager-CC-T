@@ -34,7 +34,11 @@ commands = {
     end,
 
     help=nil,
-    list=pckg.list,
+    list=function ()
+        for _, pkg in ipairs(pckgManager.list()) do
+            print(pkg)
+        end
+    end,
     listAll=function ()
         local Packages = pckg.listAll()
 
