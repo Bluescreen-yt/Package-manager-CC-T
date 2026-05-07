@@ -73,6 +73,11 @@ function pckgManager.init_config() -- initial default config
         library="/libs/" -- library
     }
 
+    -- installed packages db
+    pckgManager.installeddb = {}
+    pckgManager.installeddbPath = "/etc/pckg/installed.json"
+
+    -- aliases
     pckgManager.aliasPath = "/etc/pckg/alias.json" -- path to file with aliases
     pckgManager.aliases = {} --all loaded aliases
 
@@ -138,6 +143,7 @@ function pckgManager.init() -- init (load db etc etc)
         pckgManager.print(pckgManager.printLevel.warning, "no db file found" )
     end
 
+    pckgManager.loadInstalled()
 
     pckgManager.print(pckgManager.printLevel.message, "loading aliases file" )
     if fs.exists(pckgManager.aliasPath) then -- if alias list thingy file exists load it
@@ -314,13 +320,41 @@ function pckgManager.install(package, version) -- install package
         pckgManager.print(pckgManager.printLevel.success, "aliased: pckgManager.aliases."..package.."."..alias.." = "..fileLocation .. file )
     end
 
+    installeddb[package] = {
+        version = version,
+        install_path = fileLocation,
+    }
+
     pckgManager.saveAliases()
+    pckgManager.saveInstalled()
     pckgManager.loadAliases()
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
 
+function pckgManager.loadInstalled()
+    local installedDbFile = fs.open(pckgManager.installeddbPath, 'r')
+    installeddb = textutils.unserializeJSON(installedDbFile.readAll())
+    installedDbFile.close()
+end
+
+function pckgManager.saveInstalled()
+    local installeddbFile = fs.open(pckgManager.installeddbPath, 'w')
+    installeddbFile.write(textutils.serializeJSON(installeddb))
+    installeddbFile.close()
+end
 
 function pckgManager.remove(package) -- remove packages
+    fs.delete(installeddb[package].install_path) -- delete package files
+    installeddb[package] = nil -- remove from installed db
+    for alias, _ in pairs(pckgManager.aliases[package]) do -- remove aliases
+        shell.clearAlias(alias)
+    end
+
+    pckgManager.aliases[package] = nil
+    pckgManager.saveAliases()
+    pckgManager.saveInstalled()
+
+    
 end
 
 function pckgManager.saveAliases() -- remove packages

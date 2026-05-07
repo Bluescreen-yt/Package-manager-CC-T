@@ -4,7 +4,10 @@ pckg.debugLevel = pckg.debugLevels.debug
 
 local commands
 commands = {
-    update=nil,
+    update=function (pkg)
+        pckg.remove(pkg)
+        pckg.install(pkg)
+    end,
     createStartupFile=function ()
         if fs.exists("/startup.lua") then
             print("startup.lua already exists! are you sure you want to overite it? (y/n)")
@@ -21,8 +24,8 @@ commands = {
         startupFile.close()
         print("done! pckg will now load aliases on startup! :p")
     end,
-    install=nil,
-    remove=nil,
+    install=pckg.install,
+    remove=pckg.remove,
     loadAliases=function ()
         for command, _ in pairs(commands) do
             shell.setAlias("pckg "..command, "/bin/pckg/run.lua "..command)
