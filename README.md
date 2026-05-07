@@ -31,7 +31,7 @@ join our [discord](https://dsc.gg/cardboardos) here
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" /> 
 
 # Installation:
-```typescript
+```craft-os
 wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
 ```
 <B> or using pine store</B>
@@ -39,6 +39,12 @@ wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/re
 ```craft-os
 wget run https://pinestore.cc/d/216
 ```
+<B> or if you want to try dev branch</B>
+
+```craft-os
+wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/install.lua
+```
+
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 # Publishing: <b>
