@@ -1,6 +1,7 @@
 <div align="center">
     <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/icon.png" width="350" />
-    <div align="center">
+    <div align="center"><br>
+    <b>pckg - simple package manager for computercraft:tweaks</b> <br><br>
     <img src="https://img.shields.io/github/commit-activity/t/Bluescreen-yt/Package-manager-CC-T?style=flat-square" />
     <img src="https://img.shields.io/github/contributors/Bluescreen-yt/Package-manager-CC-T?style=flat-square" />
     </div>
@@ -17,5 +18,7 @@ wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/re
 
 ## b) using the pine store (might be outdated from time to time)
 wget run https://pinestore.cc/d/216
+
+
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ExamplePKG.png" /> 
