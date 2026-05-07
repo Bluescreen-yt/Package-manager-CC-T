@@ -17,7 +17,7 @@ commands = {
         end
 
         local startupFile = fs.open("/startup.lua", "w")
-        startupFile.write('shell.run("/bin/pckg/run.lua", "loadAliases"')
+        startupFile.write('shell.run("/bin/pckg/run.lua", "loadAliases")')
         startupFile.close()
         print("done! pckg will now load aliases on startup! :p")
     end,
