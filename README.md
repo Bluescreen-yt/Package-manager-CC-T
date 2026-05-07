@@ -101,3 +101,7 @@ if you want to publish package to official source please make ticket on discord.
 # Known issues:
 
 1. aliases not working
+
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
+
+report any bugs / issues / idea to discord or create github issue.
