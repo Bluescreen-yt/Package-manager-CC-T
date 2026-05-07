@@ -57,7 +57,7 @@ example of core.json file:
 
 if you want to publish package to official source please make ticket on discord.
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ExamplePKG.png" /> 
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 # TO DO:
 
