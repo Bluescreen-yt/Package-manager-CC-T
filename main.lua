@@ -339,7 +339,7 @@ end
 
 function pckgManager.saveInstalled()
     local installeddbFile = fs.open(pckgManager.installeddbPath, 'w')
-    installeddbFile.write(textutils.serializeJSON(installeddb))
+    installeddbFile.write(textutils.serializeJSON(pckgManager.installeddb))
     installeddbFile.close()
 end
 
@@ -367,7 +367,7 @@ end
 function pckgManager.list() -- list all installed packages
     local packages = {}
     
-    for package, _ in pairs(installeddb) do
+    for package, _ in pairs(pckgManager.installeddb) do
         table.insert(packages, package)
     end
 
