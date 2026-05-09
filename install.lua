@@ -5,7 +5,7 @@ local Branch = "dev"
 
 if fs.exists("/bin/pckg") then
     print("pckg is already installed! updating..")
-    local pckgCode = fs.open("/bin/pckg/main.lua", "r")
+    pckgCode = fs.open("/bin/pckg/main.lua", "r")
 
     if not pckgCode then
         print("failed to read existing pckg code! updating with online version..")
