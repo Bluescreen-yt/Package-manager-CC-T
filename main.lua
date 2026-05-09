@@ -50,10 +50,11 @@ function pckgManager.setup()
 end
 
 function pckgManager.init_enums()
-    pckgManager.debugLevels = { debug=0, success=1,warnings=2, errors=3, none=4 } -- enum for debugging level (debugLevel)
+    pckgManager.debugLevels = { debug=0, successes=1, warnings=2, errors=3, none=4 } -- enum for debugging level (debugLevel)
     pckgManager.printLevel = { message=0, success=1, warning=2, error=3} -- print level for pckgManager.print function
 
     pckgManager.version = 0.3
+    pckgManager.name = "pckg"
     
 end
 
@@ -89,6 +90,7 @@ end
 function pckgManager.fullinit()
     pckgManager.init_enums()
     pckgManager.init_config()
+    pckgManager.loadDB()
 end
 
 
@@ -114,8 +116,16 @@ local function prettyPrint(level, text ) -- pretty print msgs
     print() -- new line
 end
 
+function pckgManager.getPackagesCount()
+    local count = 0
+    for _, _ in pairs(pckgManager.dbContent) do
+        count = count + 1
+    end
+    return count
+end
+
 function pckgManager.info()
-    return pckgManager.version
+    return pckgManager.version, pckgManager.name, pckgManager.getPackagesCount()
 end
 
 
@@ -126,7 +136,7 @@ function pckgManager.print(level, text ) -- print
 end
 
 
-function pckgManager.init() -- init (load db etc etc)
+function pckgManager.loadDB() -- init (load db etc etc)
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.init() - start" )
 
     pckgManager.print(pckgManager.printLevel.message, "loading db file" )
@@ -473,10 +483,12 @@ end
 
 
 -- pinestore support
-pckgManager.PSS = {} -- Pine Store Support
+pckgManager.PSI = {} -- Pine Store Support
+pckgManager.PSI.API_URL = "https://pinestore.cc/api"
 
-function pckgManager.PSS.getAllProjects()
-    local r = http.get("https://pinestore.cc/api/projects")
+
+function pckgManager.PSI.getAllProjects()
+    local r = http.get(pckgManager.PSI.API_URL.."/projects")
     local res = textutils.unserializeJSON(r.readAll())
     r.close()
     return res

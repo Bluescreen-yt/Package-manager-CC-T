@@ -22,6 +22,7 @@
 - 🗃️ Multifile package support
 - 📑 Multiple package versions support
 - 🔓 Open source ( ofc )
+- 🎖️ can be required and used in others scripts (/bin/pckg/main.lua)
 
 </b>
 
@@ -90,6 +91,7 @@ if you want to publish package to official source please make ticket on discord.
 | ⚫ | add pinestore support |  |
 | ⚫ | design easier / better way of publishing packages |  |
 | ⚫ | add better github support |  |
+| ⚫ | add functions to: require library throught /bin/pckg/main.lua, check if package is installed + check version, get info about package. |  |
 
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
@@ -102,6 +104,122 @@ if you want to publish package to official source please make ticket on discord.
 # Known issues:
 
 1. aliases not working
+
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
+
+# For devs:
+
+> ## pckgManager.header()
+> Prints header into console ( if debugging level is `pckgManager.debugLevels.debug` or 0 )
+
+> [!TIP]
+> debugging level can be changedwith: `pckgManager.debugLevel = {debug level}`
+
+> [!NOTE]
+> types avalible so far: <br>
+> `debug` - all <br>
+> `successes` - succes / warning / error <br>
+> `warnings` - warning / error <br>
+> `errors` - error <br>
+> `none` - none
+
+<br>
+
+> ## pckgManager.setup()
+> Setups the environment like: /etc/pckg/Sources.txt and more
+
+> [!NOTE]
+> its used in install.lua
+
+<br>
+
+> ## pckgManager.init_enums()
+> initializes all enums like: `pckgManager.debugLevels` / `pckgManager.printLevel`
+
+<br>
+
+> ## pckgManager.init_config()
+> initializes stuff like: paths / types of packages / debug level
+
+<br>
+
+> ## pckgManager.fullinit()
+> runs `pckgManager.init_enums()` and `pckgManager.init_config()` and `pckgManager.init()` functions
+
+<br>
+
+> ## prettyPrint(level, text )
+> used for pckgManager.print(level, text )
+
+<br>
+
+> ## pckgManager.getPackagesCount()
+> returns amount of packages installed
+
+<br>
+
+> ## pckgManager.info()
+> returns info about package manager
+> version, name, amount of installed packages
+
+<br>
+
+> ## pckgManager.print(level, text )
+> replacement of print ( with debug levels ) <br>
+> use `pckgManager.printLevel.{level}` for levels of debugging or numbers from 0 to 3
+
+> [!NOTE]
+> avalible levels so far: `message`, `success`, `warning`, `error`
+
+<br>
+
+> ## pckgManager.loadDB()
+> used to load: `pckgManager.installeddb` `pckgManager.dbContent` `pckgManager.aliases`
+
+> [!NOTE]
+> `pckgManager.installeddb` - list of all installed packages with installation paths <br>
+> `pckgManager.dbContent` - list of all packages available with all versions available <br>
+> `pckgManager.aliases` - list of all aliases used by packages <br>
+
+<br>
+
+> ## pckgManager.install(package, version)
+> used to istall package
+
+<br>
+
+> ## pckgManager.remove(package)
+> used to remove package
+
+<br>
+
+> ## pckgManager.list()
+> returns all installed packages
+
+<br>
+
+> ## pckgManager.search(package)
+> returns list of 10 packages with simmular name
+
+<br>
+
+> ## pckgManager.sync()
+> used to synchronize `pckgManager.dbContent` from `pckgManager.sourcesFile` file
+
+<br>
+
+> ## pckgManager.loadAliases()
+> used to set aliases from `pckgManager.aliases`
+
+<br>
+
+> ## pckgManager.listAll()
+> returns list of all packages avalivble
+
+<br>
+
+> ## pckgManager.PSS
+> used for pinestore integration ()
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
