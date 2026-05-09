@@ -27,9 +27,9 @@ commands = {
     install=pckg.install,
     remove=pckg.remove,
     loadAliases=function ()
-        for command, _ in pairs(commands) do
-            shell.setAlias("pckg "..command, "/bin/pckg/run.lua "..command)
-        end
+        -- for command, _ in pairs(commands) do
+        --     shell.setAlias("pckg "..command, "/bin/pckg/run.lua "..command)
+        -- end
     pckg.loadAliases()
     end,
 
