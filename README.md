@@ -218,8 +218,8 @@ if you want to publish package to official source please make ticket on discord.
 
 <br>
 
-> ## pckgManager.PSS
-> used for pinestore integration ()
+> ## pckgManager.PSI
+> used for pinestore integration
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
