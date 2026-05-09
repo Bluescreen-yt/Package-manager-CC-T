@@ -32,19 +32,39 @@ join our [discord](https://dsc.gg/cardboardos) here
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" /> 
 
 # Installation:
-```craft-os
-wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
-```
-<B> or using pine store</B>
 
-```craft-os
-wget run https://pinestore.cc/d/216
-```
-<B> or if you want to try dev branch</B>
+> From gtihub ( main ) using wget 
+> ```craft-os
+> wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
+> ```
+> <br> 
+> <B> or using pine store</B>
+> 
+> ```craft-os
+> wget run https://pinestore.cc/d/216
+> ```
 
-```craft-os
-wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/install.lua
-```
+<br>
+
+> <B> From gtihub ( experimental ) using wget</B>
+> 
+> ```craft-os
+> wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/install.lua
+> ```
+
+> [!WARNING]
+> might contain some bugs
+
+<br>
+
+> <B> From gtihub ( dev ) using wget</B>
+>
+> ```craft-os
+> wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/install.lua
+> ```
+
+> [!CAUTION]
+> WILL CONTAIN A LOT OF BUGS
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
