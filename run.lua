@@ -1,5 +1,6 @@
-local PCKG_LOCK = "/etc/pckg/pckg_lock"
-if not fs.exists("/etc/pckg") then
+local PCKG_LOCK = "/etc/pckg/.pckg_lock"
+
+if not fs.exists(PCKG_LOCK) then
 
 
 fs.open(PCKG_LOCK, "w").close()
