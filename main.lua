@@ -319,7 +319,7 @@ function pckgManager.install(package, version) -- install package
             return 8, "failed to require autorun file"
         end
 
-        if result[pckgFileData.autorun_function] then
+        if type(result)=="table" and result[pckgFileData.autorun_function] then
             pckgManager.print(pckgManager.printLevel.message, "running autorun function..." )
             if not pcall(result[pckgFileData.autorun_function]()) then
                 pckgManager.print(pckgManager.printLevel.error, "failed to run autorun function" )
@@ -329,6 +329,8 @@ function pckgManager.install(package, version) -- install package
                 return 9, "failed to run autorun function"
             end
             pckgManager.print(pckgManager.printLevel.success, "autorun function executed" )
+        else
+            pckgManager.print(pckgManager.printLevel.warning, "autorun function not found" )
         end
     end
 
