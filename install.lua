@@ -1,7 +1,7 @@
--- wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/install.lua
+-- wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
 
 local pckgCode
-local Branch = "dev"
+local Branch = "main"
 
 if fs.exists("/bin/pckg") then
     print("pckg is already installed! updating..")
