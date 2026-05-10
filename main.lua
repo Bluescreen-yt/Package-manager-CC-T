@@ -76,7 +76,7 @@ function pckgManager.init_config() -- initial default config
 
     -- installed packages db
     pckgManager.installeddb = {}
-    pckgManager.installeddb = "/etc/pckg/installed.json"
+    pckgManager.installeddbPath = "/etc/pckg/installed.json"
 
     -- aliases
     pckgManager.aliasPath = "/etc/pckg/alias.json" -- path to file with aliases
