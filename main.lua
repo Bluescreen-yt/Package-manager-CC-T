@@ -259,6 +259,8 @@ function pckgManager.install(package, version) -- install package
         pckgManager.install(pckg, version)
     end
 
+    pckgManager.aliases[package] = {}
+
     funcs={function ()
         for alias, file in pairs(pckgFileData.aliases) do
         pckgManager.aliases[package][alias] = fileLocation .. file
