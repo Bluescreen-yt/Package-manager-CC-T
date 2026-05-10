@@ -335,9 +335,6 @@ function pckgManager.install(package, version) -- install package
         install_path = fileLocation
     }
 
-    pckgManager.saveAliases()
-    pckgManager.saveInstalled()
-    pckgManager.loadAliases()
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
 
