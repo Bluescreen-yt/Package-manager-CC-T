@@ -401,7 +401,10 @@ function pckgManager.list() -- list all installed packages
     local packages = {}
     
     for package, _ in pairs(pckgManager.installeddb) do
-        table.insert(packages, package)
+        table.insert(packages, {
+            pkg=package,
+            v=_.version
+        })
     end
 
     return packages

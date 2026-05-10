@@ -215,7 +215,9 @@ if you want to publish package to official source please make ticket on discord.
 <br>
 
 > ## pckgManager.list()
-> returns all installed packages
+> returns all installed packages with version
+> package name ( result[id].pkg )
+> package version ( result[id].v )
 
 <br>
 
