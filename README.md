@@ -237,7 +237,9 @@ if you want to publish package to official source please make ticket on discord.
 <br>
 
 > ## pckgManager.listAll()
-> returns list of all packages avalivble
+> returns list of all packages avalivble with version
+> package name ( result[id].pkg )
+> package version ( result[id].v )
 
 <br>
 

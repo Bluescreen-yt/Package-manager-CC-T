@@ -509,7 +509,7 @@ function pckgManager.listAll()
     local packages = {}
     
     for pckg, _ in pairs(pckgManager.dbContent) do
-        table.insert(packages, pckg)
+        table.insert(packages, { pkg=pckg, v=_.version })
     end
 
     return packages

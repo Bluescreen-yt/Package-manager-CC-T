@@ -45,7 +45,7 @@ commands = {
     help=nil,
     list=function ()
         for _, pkg in ipairs(pckg.list()) do
-            print(pkg)
+            print(package.pkg, '-', package.v)
         end
     end,
     listAll=function ()
