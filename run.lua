@@ -42,7 +42,16 @@ commands = {
     pckg.loadAliases()
     end,
 
-    help=nil,
+    help=function ()
+        print("pckg - package manager for cc:tweaked")
+        print("commands:")
+        print("install <package> or pckg install <package>=<version> - installs a package")
+        print("remove <package> - removes a package")
+        print("update <package> or pckg update <package>=<version> - updates a package")
+        print("list - lists installed packages")
+        print("listAll - lists all available packages")
+        print("sync - syncs the package database with online sources")
+    end,
     list=function ()
         for _, pkg in ipairs(pckg.list()) do
             print(package.pkg, '-', package.v)
@@ -58,11 +67,18 @@ commands = {
     sync=pckg.sync,
 }
 
-if not arg[1] then
-    commands.help()
-end
+local success, err = pcall(function () -- just in case
 
-commands[arg[1]](table.unpack(arg, 2))
+    local cmd = commands[arg[1] or "help"] or commands.help
+    
+    cmd(table.unpack(arg, 2))
+
+end)
+
+if not success then
+    print("error: "..err)
+    print("use 'pckg help' for a list of commands")
+end
 
 pckg.saveDB()
 
