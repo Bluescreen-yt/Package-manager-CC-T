@@ -1,4 +1,4 @@
-local PCKG_LOCK = "/etc/pckg/.pckg_lock"
+local PCKG_LOCK = "/etc/pckg/pckg_lock"
 if not fs.exists("/etc/pckg") then
 
 
