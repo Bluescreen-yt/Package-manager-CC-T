@@ -259,7 +259,12 @@ function pckgManager.install(package, version) -- install package
         pckgManager.install(pckg, version)
     end
 
-    funcs={}
+    funcs={function ()
+        for alias, file in pairs(pckgFileData.aliases) do
+        pckgManager.aliases[alias] = fileLocation .. file
+        pckgManager.print(pckgManager.printLevel.success, "added "..alias.." to aliases" )
+        end
+    end}
 
     for file, content in pairs(files) do
         pckgManager.print(pckgManager.printLevel.message, "inserting save func for: "..file.." into funcs")
@@ -276,10 +281,7 @@ function pckgManager.install(package, version) -- install package
 
     parallel.waitForAll(table.unpack(funcs)) -- run all funcs at same time
 
-    for alias, file in pairs(pckgFileData.aliases) do
-        pckgManager.aliases[alias] = fileLocation .. file
-        pckgManager.print(pckgManager.printLevel.success, "added "..alias.." to aliases" )
-    end
+
 
 
     if pckgFileData.autorun_file then
