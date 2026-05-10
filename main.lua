@@ -304,7 +304,7 @@ function pckgManager.install(package, version) -- install package
                 local autorunCode = file.readAll()
                 file.close()
                 local autorunFunc = load(autorunCode)
-                return autorunFunc
+                return autorunFunc()
             end
         
         )
