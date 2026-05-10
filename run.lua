@@ -1,6 +1,8 @@
 local pckg = require("main")
-pckg.fullinit()
+pckg.init_enums()
+pckg.init_config()
 pckg.debugLevel = pckg.debugLevels.debug
+pckg.loadDB()
 
 local commands
 commands = {
