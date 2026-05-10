@@ -36,7 +36,3 @@ shell.setAlias("pckg", "/bin/pckg/run.lua")
 print("don't worry about warning above. alias has been set up correctly.")
 print("pckg installed successfully! you can now use pckg")
 print("have fun using pckg :p")
-
-local DownloadLog = http.post("https://pinestore.cc/api/log/download", '{"projectid":216}')
-print(DownloadLog.readAll())
-
