@@ -34,13 +34,14 @@ function pckgManager.header()
 end
 
 function pckgManager.setup()
+
+    pckgManager.init_enums()
+    pckgManager.init_config()
+    
     if fs.exists(pckgManager.sourcesFile) then
         pckgManager.print(pckgManager.printLevel.success, "sources file found. no need for setup." )
         return true
     end
-
-    pckgManager.init_enums()
-    pckgManager.init_config()
 
     local defaultSources = {}
     table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/bluesPackages/refs/heads/main/core.json")
