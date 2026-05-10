@@ -334,9 +334,7 @@ function pckgManager.install(package, version) -- install package
         if type(result)=="table" and result[pckgFileData.autorun_function] then
             pckgManager.print(pckgManager.printLevel.message, "running autorun function..." )
             
-            
             local success, result = pcall(result[pckgFileData.autorun_function])
-
             if not success then
                 pckgManager.print(pckgManager.printLevel.error, "failed to run autorun function" )
 
