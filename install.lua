@@ -1,11 +1,11 @@
--- wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
+-- wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/install.lua
 
 local pckgCode
-local Branch = "main"
+local Branch = "dev"
 
 if fs.exists("/bin/pckg") then
     print("pckg is already installed! updating..")
-    pckgCode = fs.open("/bin/pckg/main.lua", "r")
+    pckgCode = fs.open("/bin/pckg/dev.lua", "r")
 
     if not pckgCode then
         print("failed to read existing pckg code! updating with online version..")

@@ -5,8 +5,8 @@
     "author":"cardboard os dev team",
     "pckg_type":"application",
     "files":{
-        "main.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/main.lua",
-        "run.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/run.lua"
+        "main.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/main.lua",
+        "run.lua":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/run.lua"
     },
     "requirements":{},
     "aliases":{
