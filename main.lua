@@ -37,7 +37,7 @@ function pckgManager.setup()
 
     pckgManager.init_enums()
     pckgManager.init_config()
-    
+
     if fs.exists(pckgManager.sourcesFile) then
         pckgManager.print(pckgManager.printLevel.success, "sources file found. no need for setup." )
         return true
@@ -339,14 +339,14 @@ function pckgManager.install(package, version) -- install package
     end
 
     
-    local aliases = {}
-    pckgManager.print(pckgManager.printLevel.success, "initialized pckgManager.aliases."..package )
-    for alias, file in pairs(pckgFileData.aliases) do
-        aliases[alias] = fileLocation .. file
-        pckgManager.print(pckgManager.printLevel.success, "aliased: pckgManager.aliases."..package.."."..alias.." = "..fileLocation .. file )
-    end
+    -- local aliases = {}
+    -- pckgManager.print(pckgManager.printLevel.success, "initialized pckgManager.aliases."..package )
+    -- for alias, file in pairs(pckgFileData.aliases) do
+    --     aliases[alias] = fileLocation .. file
+    --     pckgManager.print(pckgManager.printLevel.success, "aliased: pckgManager.aliases."..package.."."..alias.." = "..fileLocation .. file )
+    -- end
 
-    pckgManager.aliases[package] = aliases
+    -- pckgManager.aliases[package] = aliases
 
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
