@@ -66,7 +66,7 @@ commands[arg[1]](table.unpack(arg, 2))
 
 pckg.saveDB()
 
-fs.remove(PCKG_LOCK)
+fs.delete(PCKG_LOCK)
 else
     print("pckg is already running! wait for it to run, if thats an error delete the lock file at "..PCKG_LOCK.." report it to developers")
 end
