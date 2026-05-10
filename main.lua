@@ -34,7 +34,8 @@ function pckgManager.header()
 end
 
 function pckgManager.setup()
-    pckgManager.fullinit()
+    pckgManager.init_enums()
+    pckgManager.init_config()
 
     local defaultSources = {}
     table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/bluesPackages/refs/heads/main/core.json")
@@ -340,6 +341,11 @@ end
 
 function pckgManager.loadInstalled()
     local installedDbFile = fs.open(pckgManager.installeddbPath, 'r')
+    if not installedDbFile then
+        pckgManager.print(pckgManager.printLevel.warning, "no installed db file found" )
+        return
+    end
+
     pckgManager.installeddb = textutils.unserializeJSON(installedDbFile.readAll())
     installedDbFile.close()
 end
