@@ -172,7 +172,7 @@ end
 
 
 function pckgManager.install(package, version) -- install package
-    pckgManager.print(pckgManager.printLevel.message, "pckgManager.install( '"..package .."', '".. version .."' ) - start" )
+    pckgManager.print(pckgManager.printLevel.message, "pckgManager.install( '"..( package or "nil" ) .."', '".. ( version or "nil" ) .."' ) - start" )
     if not package then -- if no package specified
         pckgManager.print(pckgManager.printLevel.error, "No package specified" )
         return 1, "no package specified"
