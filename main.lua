@@ -367,6 +367,9 @@ end
 function pckgManager.remove(package) -- remove packages
     fs.delete(pckgManager.installeddb[package].install_path) -- delete package files
     pckgManager.installeddb[package] = nil -- remove from installed db
+
+    
+    print(pckgManager.aliases)
     print(pckgManager.aliases[package])
     for alias, _ in pairs(pckgManager.aliases[package]) do -- remove aliases
         shell.clearAlias(alias)
