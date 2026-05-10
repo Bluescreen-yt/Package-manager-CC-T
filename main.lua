@@ -36,7 +36,7 @@ end
 function pckgManager.setup()
     if fs.exists(pckgManager.sourcesFile) then
         pckgManager.print(pckgManager.printLevel.success, "sources file found. no need for setup." )
-        return
+        return true
     end
 
     pckgManager.init_enums()
@@ -53,6 +53,7 @@ function pckgManager.setup()
     local sourcesFile = fs.open(pckgManager.sourcesFile, 'w')
     sourcesFile.write(file)
     sourcesFile.close()
+    return true
 end
 
 function pckgManager.init_enums()
@@ -324,6 +325,7 @@ function pckgManager.install(package, version) -- install package
             local success, result = pcall(result[pckgFileData.autorun_function])
             if not success then
                 pckgManager.print(pckgManager.printLevel.error, "failed to run autorun function" )
+                pckgManager.print(pckgManager.printLevel.error, "Error: "..tostring(result))
 
                 pckgManager.remove(package) -- remove package cuz failed to install ( just in case )
 
@@ -335,14 +337,15 @@ function pckgManager.install(package, version) -- install package
         end
     end
 
-    pckgManager.aliases[package] = {}
+    
+    local aliases = {}
     pckgManager.print(pckgManager.printLevel.success, "initialized pckgManager.aliases."..package )
     for alias, file in pairs(pckgFileData.aliases) do
-        pckgManager.aliases[package][alias] = fileLocation .. file
+        aliases[alias] = fileLocation .. file
         pckgManager.print(pckgManager.printLevel.success, "aliased: pckgManager.aliases."..package.."."..alias.." = "..fileLocation .. file )
     end
 
-
+    pckgManager.aliases[package] = aliases
 
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
