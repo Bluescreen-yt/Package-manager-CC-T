@@ -335,9 +335,9 @@ function pckgManager.install(package, version) -- install package
             pckgManager.print(pckgManager.printLevel.message, "running autorun function..." )
             
             
-            local succes, result = pcall(result[pckgFileData.autorun_function]())
-            print(succes, result)
-            if not succes then
+            local success, result = pcall(result[pckgFileData.autorun_function])
+
+            if not success then
                 pckgManager.print(pckgManager.printLevel.error, "failed to run autorun function" )
 
                 pckgManager.remove(package) -- remove package cuz failed to install ( just in case )
