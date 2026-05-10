@@ -234,6 +234,11 @@ function pckgManager.install(package, version) -- install package
 
     fileLocation = fileLocation .. package .. "/" -- add package name to file location
 
+    pckgManager.installeddb[package] = { -- add pckg to list of installed packages
+        version = version,
+        install_path = fileLocation
+    }
+
     local files = {}
     local funcs={} -- funcs to run
 
@@ -355,10 +360,7 @@ function pckgManager.install(package, version) -- install package
         pckgManager.print(pckgManager.printLevel.success, "aliased: pckgManager.aliases."..package.."."..alias.." = "..fileLocation .. file )
     end
 
-    pckgManager.installeddb[package] = { -- add pckg to list of installed packages
-        version = version,
-        install_path = fileLocation
-    }
+
 
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install - end" )
 end
