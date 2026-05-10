@@ -241,6 +241,17 @@ if you want to publish package to official source please make ticket on discord.
 > ## pckgManager.PSI
 > used for pinestore integration
 
+<br>
+
+> ## pckgManager.saveDB()
+> used for saving databases
+
+<br>
+
+> ## pckgManager.saveContent()
+> used for saving content db
+
+
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 report any bugs / issues / idea to discord or create github issue.

@@ -1,3 +1,9 @@
+local PCKG_LOCK = "/etc/pckg/.pckg_lock"
+if not fs.exists("/etc/pckg") then
+
+
+fs.open(PCKG_LOCK, "w").close()
+
 local pckg = require("main")
 pckg.init_enums()
 pckg.init_config()
@@ -56,3 +62,11 @@ if not arg[1] then
 end
 
 commands[arg[1]](table.unpack(arg, 2))
+
+pckg.saveDB()
+
+fs.remove(PCKG_LOCK)
+else
+    print("pckg is already running! wait for it to run, if thats an error delete the lock file at "..PCKG_LOCK.." report it to developers")
+end
+

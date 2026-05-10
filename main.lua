@@ -138,36 +138,13 @@ end
 
 
 function pckgManager.loadDB() -- init (load db etc etc)
-    pckgManager.print(pckgManager.printLevel.message, "pckgManager.init() - start" )
+    parallel.waitForAll( -- load everything at same time for speed
+        pckgManager.loadInstalled,
+        pckgManager.loadContent,
+        pckgManager.loadAliases
+    )
 
-    pckgManager.print(pckgManager.printLevel.message, "loading db file" )
-    if fs.exists(pckgManager.dbPath) then -- if db exists load it
-        pckgManager.print(pckgManager.printLevel.success, "db file found." )
-    
-        local DB_FILE = fs.open(pckgManager.dbPath, 'r') -- open db file
 
-        pckgManager.dbContent = textutils.unserializeJSON(DB_FILE.readAll()) -- load db content
-        DB_FILE.close() -- close file
-
-        pckgManager.print(pckgManager.printLevel.success, "done loading db!")
-    else -- if no db file found
-        pckgManager.print(pckgManager.printLevel.warning, "no db file found" )
-    end
-
-    pckgManager.loadInstalled()
-
-    pckgManager.print(pckgManager.printLevel.message, "loading aliases file" )
-    if fs.exists(pckgManager.aliasPath) then -- if alias list thingy file exists load it
-    
-        local ALIAS_FILE = fs.open(pckgManager.aliasPath, 'r') -- open alias file
-        pckgManager.aliases = textutils.unserializeJSON(ALIAS_FILE.readAll()) -- load alias content
-        ALIAS_FILE.close() -- close file
-        pckgManager.print(pckgManager.printLevel.success, "done loading aliases!")
-    else -- if no alias file found
-        pckgManager.print(pckgManager.printLevel.warning, "no alias file found" )
-    end
-
-    pckgManager.print(pckgManager.printLevel.message, "pckgManager.init - end" )
 end
 
 
@@ -385,6 +362,7 @@ end
 function pckgManager.remove(package) -- remove packages
     fs.delete(pckgManager.installeddb[package].install_path) -- delete package files
     pckgManager.installeddb[package] = nil -- remove from installed db
+    print(pckgManager.aliases[package])
     for alias, _ in pairs(pckgManager.aliases[package]) do -- remove aliases
         shell.clearAlias(alias)
     end
@@ -418,6 +396,32 @@ end
 function pckgManager.search(package) -- search for package in db
     
     
+end
+
+function pckgManager.loadContent()
+    pckgManager.print(pckgManager.printLevel.message, "pckgManager.init() - start" )
+
+    pckgManager.print(pckgManager.printLevel.message, "loading db file" )
+    if fs.exists(pckgManager.dbPath) then -- if db exists load it
+        pckgManager.print(pckgManager.printLevel.success, "db file found." )
+    
+        local DB_FILE = fs.open(pckgManager.dbPath, 'r') -- open db file
+
+        pckgManager.dbContent = textutils.unserializeJSON(DB_FILE.readAll()) -- load db content
+        DB_FILE.close() -- close file
+
+        pckgManager.print(pckgManager.printLevel.success, "done loading db!")
+    else -- if no db file found
+        pckgManager.print(pckgManager.printLevel.warning, "no db file found" )
+    end
+
+end
+
+
+function pckgManager.saveContent()
+    local dbFile = fs.open(pckgManager.dbPath, 'w')
+    dbFile.write(textutils.serializeJSON(pckgManager.dbContent))
+    dbFile.close()
 end
 
 
@@ -465,9 +469,7 @@ function pckgManager.sync() -- sync db from sources
 
 
 
-    local dbFile = fs.open(pckgManager.dbPath, 'w')
-    dbFile.write(textutils.serializeJSON(pckgManager.dbContent))
-    dbFile.close()
+    pckgManager.saveContent()
 
 end
 
@@ -523,7 +525,11 @@ function pckgManager.PSI.getAllProjects()
     return res
 end
 
-
+function pckgManager.saveDB()
+    pckgManager.saveAliases()
+    pckgManager.saveInstalled()
+    pckgManager.saveContent()
+end
 
 
 
