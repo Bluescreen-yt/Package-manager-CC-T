@@ -34,6 +34,11 @@ function pckgManager.header()
 end
 
 function pckgManager.setup()
+    if fs.exists(pckgManager.sourcesFile) then
+        pckgManager.print(pckgManager.printLevel.success, "sources file found. no need for setup." )
+        return
+    end
+
     pckgManager.init_enums()
     pckgManager.init_config()
 
