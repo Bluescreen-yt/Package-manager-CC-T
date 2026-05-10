@@ -303,16 +303,28 @@ function pckgManager.install(package, version) -- install package
                 local file = fs.open(autorunPath, 'r')
                 local autorunCode = file.readAll()
                 file.close()
-                local autorunFunc = load(autorunCode)
-                return autorunFunc()
+                local autorunCodeAsFunc = load(autorunCode)
+                if not autorunCodeAsFunc then
+                    pckgManager.print(pckgManager.printLevel.error, "failed to load autorun file: "..autorunPath )
+                    return false, false
+                end
+                return autorunCodeAsFunc()
             end
         
         )
+
+        if not (success and result) then
+            pckgManager.print(pckgManager.printLevel.error, "file no found, or error with requiring it ( autorunCodeAsFunc is nil / false )")
+            pckgManager.remove(package) -- remove package cuz failed to install ( just in case )
+
+            return 8, "failed to require autorun file"
             
+        end
+
         if (not success) and success ~= nil then
             pckgManager.print(pckgManager.printLevel.error, "failed to require autorun file" )
 
-            print("Error: "..tostring(result))
+            pckgManager.print(pckgManager.printLevel.error, "Error: "..tostring(result))
 
             pckgManager.remove(package) -- remove package cuz failed to install ( just in case )
 
