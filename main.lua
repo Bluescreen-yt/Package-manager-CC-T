@@ -170,6 +170,11 @@ function pckgManager.install(package, version) -- install package
         pckgManager.print(pckgManager.printLevel.message, "version: "..version )
     end
 
+    if pckgManager.installeddb[package] then -- if package is already installed
+        pckgManager.print(pckgManager.printLevel.warning, "package "..package.." is already installed")
+        return 0, "package already installed"
+    end
+
     local pckgDB = pckgManager.dbContent[package] -- get package from database
     if not pckgDB then
         pckgManager.print(pckgManager.printLevel.error, "package "..package.." not found" )

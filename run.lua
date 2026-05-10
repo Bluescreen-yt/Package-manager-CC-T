@@ -2,8 +2,24 @@ local PCKG_LOCK = "/etc/pckg/.pckg_lock"
 
 if not fs.exists(PCKG_LOCK) then
 
-
 fs.open(PCKG_LOCK, "w").close()
+
+function Tokenize()
+    local Base = table.concat(arg or {'',''}, " ")
+    local Tokens = {}
+    local CurrentToken = ""
+    local InQuotes = false
+
+    for i = 1, #Base do
+        local CurrentCharacter = Base:sub(i, i)
+        
+
+    
+    end
+
+
+
+end
 
 local pckg = require("main")
 pckg.init_enums()
