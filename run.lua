@@ -1,6 +1,6 @@
 local PCKG_LOCK = "/etc/pckg/.pckg_lock"
 
-if not fs.exists(PCKG_LOCK) then
+if not fs.exists(PCKG_LOCK) then local succ, res = pcall(function ()
 
 fs.open(PCKG_LOCK, "w").close()
 
@@ -99,6 +99,9 @@ end
 pckg.saveDB()
 
 fs.delete(PCKG_LOCK)
+
+end)
+if not succ then print("error: "..res) end
 else
     print("pckg is already running! wait for it to run, if thats an error delete the lock file at "..PCKG_LOCK.." report it to developers")
 end
