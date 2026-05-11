@@ -26,6 +26,7 @@ pckg.init_enums()
 pckg.init_config()
 pckg.debugLevel = pckg.debugLevels.debug
 pckg.loadDB()
+pckg.header()
 
 local commands
 commands = {
