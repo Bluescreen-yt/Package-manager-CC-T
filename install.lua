@@ -38,5 +38,6 @@ pckg.header()
 print()
 print("pckg installed successfully! you can now use pckg")
 print("have fun using pckg :p")
+print("use 'pckg createStartupFile' to automatically load aliases on startup!")
 
 pckg.saveDB()
