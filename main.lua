@@ -55,6 +55,9 @@ end
 
 function pckgManager.init_config() -- initial default config
 
+    pckgManager.usePineStore = true
+
+
     -- Database
     pckgManager.dbPath    = "/etc/pckg/db.json" -- path to db
     pckgManager.dbContent = {} -- content in db
@@ -522,6 +525,12 @@ local function _test()
 end
 
 
+function pckgManager.saveDB()
+    pckgManager.saveAliases()
+    pckgManager.saveInstalled()
+    pckgManager.saveContent()
+end
+
 
 -- pinestore support
 pckgManager.PSI = {} -- Pine Store Support
@@ -535,13 +544,32 @@ function pckgManager.PSI.getAllProjects()
     return res
 end
 
-function pckgManager.saveDB()
-    pckgManager.saveAliases()
-    pckgManager.saveInstalled()
-    pckgManager.saveContent()
+
+-- RAW support
+
+
+
+
+-- GITHUB / GITLAB support
+
+
+
+
+
+
+-- for working with packages / library
+
+function pckgManager.RequirePackage(pckg)
+    if not pckg then return nil end
+
+    if not pckgManager.installeddb[pckg] then
+        pckgManager.print(pckgManager.printLevel.error, "package "..pckg.." is not installed" )
+        return nil
+    else
+        pckgManager.print(pckgManager.printLevel.success, "package "..pckg.." is installed" )
+        return require(pckgManager.installeddb[pckg].install_path, pckgManager.installeddb[pckg].version)
+    end
+
+
+    return pckgManager
 end
-
-
-
-
-return pckgManager
