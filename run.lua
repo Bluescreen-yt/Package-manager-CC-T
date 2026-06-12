@@ -1,3 +1,12 @@
+-- to do: -bs
+-- file:{path} - install from file (pkg.json)
+-- html / raw:{link} - raw pkg.json from url
+-- gh: {user}/{repo} - install from github
+-- gl: {user}/{repo} - install from gitlab
+-- psi: {project_id} - install from pinestore using id
+-- gh: {user}/{repo}#{branch} - install specific branch from github 
+
+
 local PCKG_LOCK = "/etc/pckg/.pckg_lock"
 
 if not fs.exists(PCKG_LOCK) then local succ, res = pcall(function ()

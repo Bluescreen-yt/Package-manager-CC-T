@@ -5,66 +5,77 @@
 --
 -------------------------------------------------------------------------------------------------------------
 
-local pckgManager = {}
 
-function pckgManager.header()
-    pckgManager.print(pckgManager.printLevel.message, "====================================================================================" )
-    pckgManager.print(pckgManager.printLevel.message, "pckg v"..pckgManager.version )
-    pckgManager.print(pckgManager.printLevel.message, "made by cardboard os dev team" )
+
+local pckgManager = {} -- definition of pckgmanager
+
+function pckgManager.header() -- header
+    pckgManager.print(pckgManager.printLevel.message, "====================================================================================" ) -- separator
+    pckgManager.print(pckgManager.printLevel.message, "pckg v"..pckgManager.version ) -- version of pckg
+    pckgManager.print(pckgManager.printLevel.message, "made by cardboard os dev team" ) -- dev team info
     pckgManager.print(pckgManager.printLevel.message, "thank you for using pckg! have a nice day ;p" )
-    pckgManager.print(pckgManager.printLevel.message, "https://github.com/Bluescreen-yt/Package-manager-CC-T" )
-    pckgManager.print(pckgManager.printLevel.message, "feel free to modify / help us out with code" )
+    pckgManager.print(pckgManager.printLevel.message, "https://github.com/Bluescreen-yt/Package-manager-CC-T" ) -- link to github
+    pckgManager.print(pckgManager.printLevel.message, "feel free to modify / help us out with code" ) 
     pckgManager.print(pckgManager.printLevel.message, "any help / feedback / idea is appreciated!" )
-    pckgManager.print(pckgManager.printLevel.message, "join our discord for news and updates + guides and welcoming community: dsc.gg/cardboardos" )
+    pckgManager.print(pckgManager.printLevel.message, "join our discord for news and updates + guides and welcoming community: dsc.gg/cardboardos" ) -- discord info
     pckgManager.print(pckgManager.printLevel.message, "====================================================================================" )
 end
 
-function pckgManager.setup()
+function pckgManager.setup() -- setup function ( setup whole project automatically ) with creating sources file
 
-    pckgManager.init_enums()
-    pckgManager.init_config()
+    pckgManager.init_enums() -- initalize default enums
+    pckgManager.init_config() -- initialize default config 
 
-    if fs.exists(pckgManager.sourcesFile) then
-        pckgManager.print(pckgManager.printLevel.success, "sources file found. no need for setup." )
-        return true
+    if fs.exists(pckgManager.sourcesFile) then -- check for file with list of sources
+        pckgManager.print(pckgManager.printLevel.success, "sources file found. no need for setup." ) -- inform user
+
+        pckgManager.loadDB()
+        return true -- return  true since source file already exists 
     end
 
-    local defaultSources = {}
-    table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/bluesPackages/refs/heads/main/core.json")
+    local defaultSources = {} -- create minimal / basic sources file
+    table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/bluesPackages/refs/heads/main/core.json") -- BluesPackages ( to do: find more packages -bs )
 
-    local file = ""
-    for _, source in ipairs(defaultSources) do
-        file = file .. source .. "\n"
-    end
+    local file = table.concat( defaultSources, "\n") -- file content
 
-    local sourcesFile = fs.open(pckgManager.sourcesFile, 'w')
-    sourcesFile.write(file)
-    sourcesFile.close()
-    return true
+    local sourcesFile = fs.open(pckgManager.sourcesFile, 'w') -- open sourcesFile
+    sourcesFile.write(file) -- write to file
+    sourcesFile.close() -- close it
+    
+    pckgManager.loadDB()
+    return true -- return true
+
+    -- to do: add exception handling ( just in case ) -bs
 end
 
-function pckgManager.init_enums()
+function pckgManager.init_enums() -- initialize enums
     pckgManager.debugLevels = { debug=0, successes=1, warnings=2, errors=3, none=4 } -- enum for debugging level (debugLevel)
     pckgManager.printLevel = { message=0, success=1, warning=2, error=3} -- print level for pckgManager.print function
 
-    pckgManager.version = 0.3
-    pckgManager.name = "pckg"
+    pckgManager.version = 0.3 -- pckg version
+    pckgManager.name = "pckg" -- pckg name
     
 end
+
+function pckgManager.run( pckg, ... ) -- run pckg with args
+    -- to do: add function to run packages with arguments -bs
+end
+
 
 
 function pckgManager.init_config() -- initial default config
 
-    pckgManager.usePineStore = true
+    pckgManager.usePineStore = true -- use pinestore? if enabled: searches pinestore for packages
 
 
     -- Database
-    pckgManager.dbPath    = "/etc/pckg/db.json" -- path to db
-    pckgManager.dbContent = {} -- content in db
-    pckgManager.sourcesFile = "/etc/pckg/sources.txt" -- path to sources file
+    pckgManager.dbPath    = "/etc/pckg/db.json" -- path to db (the db file contains all packages that are listed in sourcesFile, AND DOES NOT INCLUDE PINESTORE projects )
+    pckgManager.dbContent = {} -- the content of db (the one with every package)
+    pckgManager.sourcesFile = "/etc/pckg/sources.txt" -- path to sources file ( the file that will be used to update db ) contains links to core.json files (raw) 
+    -- to do: add more ( user friendly ) ways to save links like github link to repo -bs
 
     -- Install paths
-    pckgManager.installPaths = {
+    pckgManager.installPaths = { -- this table contains paths to `different` types of packages like applications or services
         application="/bin/", -- application
         service="/services/", -- service
         test="/tests/", -- startup test
@@ -72,19 +83,19 @@ function pckgManager.init_config() -- initial default config
     }
 
     -- installed packages db
-    pckgManager.installeddb = {}
-    pckgManager.installeddbPath = "/etc/pckg/installed.json"
+    pckgManager.installeddb = {} -- db containing ALL installed packages on pc
+    pckgManager.installeddbPath = "/etc/pckg/installed.json" -- path to db with installed packages ( just so package manager doesnt need to scan FOR ALL packages in ALL directories on pc just to run / require it or just do any operation) (/etc/pckg/installed.json by default)
 
     -- aliases
-    pckgManager.aliasPath = "/etc/pckg/alias.json" -- path to file with aliases
+    pckgManager.aliasPath = "/etc/pckg/alias.json" -- path to file with aliases (/etc/pckg/alias.json by default)
     pckgManager.aliases = {} --all loaded aliases
 
     -- dev stuff
-    pckgManager.debugLevel = pckgManager.debugLevels.debug -- debug level
+    pckgManager.debugLevel = pckgManager.debugLevels.debug -- debug level (debug by default)
 
 end
 
-function pckgManager.fullinit()
+function pckgManager.fullinit() -- full init (minimal config without checking for sources file)
     pckgManager.init_enums()
     pckgManager.init_config()
     pckgManager.loadDB()
@@ -92,55 +103,53 @@ end
 
 
 local function prettyPrint(level, text ) -- pretty print msgs
-    local levelData = {
-        [0]={ icon="*", color="8" },
-        [2]={ icon="?", color="1" },
-        [1]={ icon="V", color="d" },
-        [3]={ icon="!", color="e" },
+    local levelData = { -- info about levels of prints
+        [0]={ icon="*", color="8" }, -- icon color (debug)
+        [2]={ icon="?", color="1" }, -- warning
+        [1]={ icon="V", color="d" }, -- succes
+        [3]={ icon="!", color="e" }, -- error
     }
 
-    local Pre = " "..levelData[level].icon.." "
-    local PreColor = string.rep(levelData[level].color, #Pre)
-    local msg = " " .. text .. " "
-    local fullMsg = Pre .. msg
+    local Pre = " "..levelData[level].icon.." " -- prefix to message [>> ! <<< ERROR MESSAGE ]
+    local PreColor = string.rep(levelData[level].color, #Pre) -- the color of prefix
+    local msg = " " .. text .. " " -- message at end [ ! >>> ERROR <<<]
+    local fullMsg = Pre .. msg -- full msg [ !  ERROR ]
 
-    term.blit( -- print
+    term.blit( -- print the message
         fullMsg,  -- message
         string.rep("0", #fullMsg), -- foreground ( full white )
-        PreColor .. string.rep("7", #msg) -- background ( msg color + gray )
+        PreColor .. string.rep("7", #msg) -- background ( prefix color + gray )
     )
 
     print() -- new line
 end
 
-function pckgManager.getPackagesCount()
+function pckgManager.getPackagesCount() -- get tottal count of packages FOUND ( pinestore NOT included )
     local count = 0
-    for _, _ in pairs(pckgManager.dbContent) do
+    for _, _ in pairs(pckgManager.dbContent) do -- for every package
         count = count + 1
     end
     return count
 end
 
-function pckgManager.info()
+function pckgManager.info() -- get info about pckg
     return pckgManager.version, pckgManager.name, pckgManager.getPackagesCount()
 end
 
 
-function pckgManager.print(level, text ) -- print
-    if level>=pckgManager.debugLevel then -- check if level of message is lower or eq to debug level
+function pckgManager.print( level, text ) -- print
+    if level>=pckgManager.debugLevel then -- check if level of message is lower or equal to debug level
         prettyPrint(level, text)
     end
 end
 
 
-function pckgManager.loadDB() -- init (load db etc etc)
-    parallel.waitForAll( -- load everything at same time for speed
+function pckgManager.loadDB() -- load all db (installedDb, ContentDb, Aliases)
+    parallel.waitForAll( -- load everything at same time for speed idk
         pckgManager.loadInstalled,
         pckgManager.loadContent,
         pckgManager.loadAliases
     )
-
-
 end
 
 
@@ -152,6 +161,8 @@ function pckgManager.install(package, version) -- install package
     else
         pckgManager.print(pckgManager.printLevel.message, "package: "..package)
     end
+    
+    -- to do: add check for version -bs
     if not version then -- if no version specified then set it to latest
         pckgManager.print(pckgManager.printLevel.warning, "No version specified, installing latest" )
         version="latest"
@@ -164,6 +175,7 @@ function pckgManager.install(package, version) -- install package
         return 0, "package already installed"
     end
 
+    -- to do: add pinestore check -bs
     local pckgDB = pckgManager.dbContent[package] -- get package from database
     if not pckgDB then
         pckgManager.print(pckgManager.printLevel.error, "package "..package.." not found" )
@@ -174,23 +186,23 @@ function pckgManager.install(package, version) -- install package
 
     if version == "latest" then
         pckgManager.print(pckgManager.printLevel.message, "getting latest version" )
-        version = pckgDB.latest
+        version = pckgDB.latest -- set package version to latest found
 
-        if not version then
+        if not version then -- if version is nil... then error 
             pckgManager.print(pckgManager.printLevel.error, "could not get latest version" )
             return 3, "could not get latest version"
         end
     end
 
     pckgManager.print(pckgManager.printLevel.message, "getting version: "..version )
-    local pckg_data = pckgDB[version]
+    local pckg_data = pckgDB[version] -- url info package info from selected version
     if not pckg_data then
         pckgManager.print(pckgManager.printLevel.error, "could not get "..version.." version of the package "..package )
         return 4, "failed to retrive version data"
     end
 
     pckgManager.print(pckgManager.printLevel.message, "retriving package data from url: "..pckg_data )
-    local pckgFileRequest = http.get(pckg_data)
+    local pckgFileRequest = http.get(pckg_data) -- get package info [pkg.json]
     local pckgFileContent = pckgFileRequest.readAll()
     pckgFileRequest.close()
 
