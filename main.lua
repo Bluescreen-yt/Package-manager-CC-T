@@ -102,7 +102,7 @@ function pckgManager.fullinit() -- full init (minimal config without checking fo
 end
 
 
-local function prettyPrint(level, text) -- pretty print msgs
+local function prettyPrint(level, text, di) -- pretty print msgs
     local levelData = { -- info about levels of prints
         [0]={ icon="*", color="8" }, -- icon color (debug)
         [2]={ icon="?", color="1" }, -- warning
@@ -110,11 +110,10 @@ local function prettyPrint(level, text) -- pretty print msgs
         [3]={ icon="!", color="e" }, -- error
     }
 
-    local line = debug.getinfo(1, "Sl")
-
+    di = di or { currentline = "" }
     
 
-    text = text .. line.currentline
+    text = text .. di.currentline
     local Pre = " "..levelData[level].icon.." " -- prefix to message [>> ! <<< ERROR MESSAGE ]
     local PreColor = string.rep(levelData[level].color, #Pre) -- the color of prefix
     local msg = " " .. text .. " " -- message at end [ ! >>> ERROR <<<]
@@ -142,9 +141,9 @@ function pckgManager.info() -- get info about pckg
 end
 
 
-function pckgManager.print( level, text ) -- print
+function pckgManager.print( level, text, di) -- print
     if level>=pckgManager.debugLevel then -- check if level of message is lower or equal to debug level
-        prettyPrint(level, text)
+        prettyPrint(level, text, di)
     end
 end
 
@@ -161,7 +160,7 @@ end
 function pckgManager.install(package, version) -- install package
     pckgManager.print(pckgManager.printLevel.message, "pckgManager.install( '"..( package or "nil" ) .."', '".. ( version or "nil" ) .."' ) - start" )
     if not package then -- if no package specified
-        pckgManager.print(pckgManager.printLevel.error, "No package specified" )
+        pckgManager.print(pckgManager.printLevel.error, "No package specified", debug.getinfo(1, "Sl"))
         return 1, "no package specified"
     else
         pckgManager.print(pckgManager.printLevel.message, "package: "..package)
@@ -183,7 +182,7 @@ function pckgManager.install(package, version) -- install package
     -- to do: add pinestore check -bs
     local pckgDB = pckgManager.dbContent[package] -- get package from database
     if not pckgDB then
-        pckgManager.print(pckgManager.printLevel.error, "package "..package.." not found" )
+        pckgManager.print(pckgManager.printLevel.error, "package "..package.." not found", debug.getinfo(1, "Sl") )
         return 2, "package not found"
     else
         pckgManager.print(pckgManager.printLevel.success, "package found" )
@@ -194,7 +193,7 @@ function pckgManager.install(package, version) -- install package
         version = pckgDB.latest -- set package version to latest found
 
         if not version then -- if version is nil... then error 
-            pckgManager.print(pckgManager.printLevel.error, "could not get latest version" )
+            pckgManager.print(pckgManager.printLevel.error, "could not get latest version", debug.getinfo(1, "Sl") )
             return 3, "could not get latest version"
         end
     end
@@ -202,7 +201,7 @@ function pckgManager.install(package, version) -- install package
     pckgManager.print(pckgManager.printLevel.message, "getting version: "..version )
     local pckg_data = pckgDB[version] -- url info package info from selected version
     if not pckg_data then
-        pckgManager.print(pckgManager.printLevel.error, "could not get "..version.." version of the package "..package )
+        pckgManager.print(pckgManager.printLevel.error, "could not get "..version.." version of the package "..package, debug.getinfo(1, "Sl") )
         return 4, "failed to retrive version data"
     end
 
@@ -215,7 +214,7 @@ function pckgManager.install(package, version) -- install package
 
 
     if not pckgFileData then
-        pckgManager.print(pckgManager.printLevel.error, "failed to retrive package data from url: "..pckg_data )
+        pckgManager.print(pckgManager.printLevel.error, "failed to retrive package data from url: "..pckg_data, debug.getinfo(1, "Sl"))
         return 7, "failed to retrive package data"
     end
 
@@ -223,7 +222,7 @@ function pckgManager.install(package, version) -- install package
     local fileLocation = pckgManager.installPaths[pckgFileData.pckg_type]
 
     if not fileLocation then
-        pckgManager.print(pckgManager.printLevel.error, "invalid package type: "..pckgFileData.pckg_type )
+        pckgManager.print(pckgManager.printLevel.error, "invalid package type: "..pckgFileData.pckg_type, debug.getinfo(1, "Sl"))
         return 6, "invalid package type"
     end
 
@@ -248,7 +247,7 @@ function pckgManager.install(package, version) -- install package
             local fileRequest = http.get(url)
 
             if not fileRequest then
-                pckgManager.print(pckgManager.printLevel.error, "failed to retrive file: "..file.." from url: "..url )
+                pckgManager.print(pckgManager.printLevel.error, "failed to retrive file: "..file.." from url: "..url, debug.getinfo(1, "Sl") )
                 return 5, "failed to retrive file"
             end
 
@@ -309,7 +308,7 @@ function pckgManager.install(package, version) -- install package
                 file.close()
                 local autorunCodeAsFunc = load(autorunCode)
                 if not autorunCodeAsFunc then
-                    pckgManager.print(pckgManager.printLevel.error, "failed to load autorun file: "..autorunPath )
+                    pckgManager.print(pckgManager.printLevel.error, "failed to load autorun file: "..autorunPath, debug.getinfo(1, "Sl"))
                     return false, false
                 end
                 return autorunCodeAsFunc()
@@ -318,7 +317,7 @@ function pckgManager.install(package, version) -- install package
         )
 
         if not (success and result) then
-            pckgManager.print(pckgManager.printLevel.error, "file no found, or error with requiring it ( autorunCodeAsFunc is nil / false )")
+            pckgManager.print(pckgManager.printLevel.error, "file no found, or error with requiring it ( autorunCodeAsFunc is nil / false )", debug.getinfo(1, "Sl"))
             pckgManager.remove(package) -- remove package cuz failed to install ( just in case )
 
             return 8, "failed to require autorun file"
@@ -326,9 +325,9 @@ function pckgManager.install(package, version) -- install package
         end
 
         if (not success) and success ~= nil then
-            pckgManager.print(pckgManager.printLevel.error, "failed to require autorun file" )
+            pckgManager.print(pckgManager.printLevel.error, "failed to require autorun file", debug.getinfo(1, "Sl"))
 
-            pckgManager.print(pckgManager.printLevel.error, "Error: "..tostring(result))
+            pckgManager.print(pckgManager.printLevel.error, "Error: "..tostring(result), debug.getinfo(1, "Sl"))
 
             pckgManager.remove(package) -- remove package cuz failed to install ( just in case )
 
@@ -340,7 +339,7 @@ function pckgManager.install(package, version) -- install package
             
             local success, result = pcall(result[pckgFileData.autorun_function])
             if not success then
-                pckgManager.print(pckgManager.printLevel.error, "failed to run autorun function" )
+                pckgManager.print(pckgManager.printLevel.error, "failed to run autorun function", debug.getinfo(1, "Sl"))
                 pckgManager.print(pckgManager.printLevel.error, "Error: "..tostring(result))
 
                 pckgManager.remove(package) -- remove package cuz failed to install ( just in case )
@@ -466,7 +465,7 @@ function pckgManager.sync() -- sync db from sources
 
         local SourceContent = http.get(line)
         if not SourceContent then
-            pckgManager.print(pckgManager.printLevel.error, "failed to retrive source: "..line )
+            pckgManager.print(pckgManager.printLevel.error, "failed to retrive source: "..line, debug.getinfo(1, "Sl"))
             return 9, "failed to retrive source"
         end
 
