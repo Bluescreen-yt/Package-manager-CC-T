@@ -109,7 +109,10 @@ local function prettyPrint(level, text) -- pretty print msgs
         [1]={ icon="V", color="d" }, -- succes
         [3]={ icon="!", color="e" }, -- error
     }
-    text = text .. debug.getinfo(2, "Sl")
+
+    print(table.concat( debug.getinfo(2, "Sl"), ", "))
+
+    text = text
     local Pre = " "..levelData[level].icon.." " -- prefix to message [>> ! <<< ERROR MESSAGE ]
     local PreColor = string.rep(levelData[level].color, #Pre) -- the color of prefix
     local msg = " " .. text .. " " -- message at end [ ! >>> ERROR <<<]
