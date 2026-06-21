@@ -19,7 +19,7 @@ function pckgManager.header() -- header
     pckgManager.print(pckgManager.printLevel.message, "any help / feedback / idea is appreciated!" )
     pckgManager.print(pckgManager.printLevel.message, "join our discord for news and updates + guides and welcoming community: dsc.gg/cardboardos" ) -- discord info
     pckgManager.print(pckgManager.printLevel.message, "====================================================================================" )
-end
+end 
 
 function pckgManager.setup() -- setup function ( setup whole project automatically ) with creating sources file
 
@@ -102,14 +102,14 @@ function pckgManager.fullinit() -- full init (minimal config without checking fo
 end
 
 
-local function prettyPrint(level, text ) -- pretty print msgs
+local function prettyPrint(level, text) -- pretty print msgs
     local levelData = { -- info about levels of prints
         [0]={ icon="*", color="8" }, -- icon color (debug)
         [2]={ icon="?", color="1" }, -- warning
         [1]={ icon="V", color="d" }, -- succes
         [3]={ icon="!", color="e" }, -- error
     }
-
+    text = text .. debug.getinfo(2, "Sl")
     local Pre = " "..levelData[level].icon.." " -- prefix to message [>> ! <<< ERROR MESSAGE ]
     local PreColor = string.rep(levelData[level].color, #Pre) -- the color of prefix
     local msg = " " .. text .. " " -- message at end [ ! >>> ERROR <<<]
