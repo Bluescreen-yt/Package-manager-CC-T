@@ -585,3 +585,5 @@ function pckgManager.RequirePackage(pckg)
 
     return pckgManager
 end
+
+return pckgManager
