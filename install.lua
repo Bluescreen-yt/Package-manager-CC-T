@@ -41,3 +41,13 @@ print("have fun using pckg :p")
 print("use 'pckg createStartupFile' to automatically load aliases on startup!")
 
 pckg.saveDB()
+
+if not file.exists("/startup.lua") then
+    print("do you want to create a startup.lua file to automatically load aliases on startup? (y/n)")
+    local response = read()
+    if string.lower(response) == "y" then
+        os.run("/bin/pckg/run.lua", "createStartupFile")
+    else
+        print("if you want to load aliases, run '/bin/pckg/run.lua loadAliases'")
+    end
+end
