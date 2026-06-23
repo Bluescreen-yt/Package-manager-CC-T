@@ -34,7 +34,8 @@ function pckgManager.setup() -- setup function ( setup whole project automatical
     end
 
     local defaultSources = {} -- create minimal / basic sources file
-    table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/bluesPackages/refs/heads/main/core.json") -- BluesPackages ( to do: find more packages -bs )
+    table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/core.json") -- pckg
+    table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/CardBoard-OS-CCT/refs/heads/main/core.json") -- cbos
 
     local file = table.concat( defaultSources, "\n") -- file content
 
@@ -533,6 +534,7 @@ function pckgManager.listAll()
     local packages = {}
     
     for pckg, _ in pairs(pckgManager.dbContent) do
+
         table.insert(packages, { pkg=pckg, version=_.version })
     end
 
