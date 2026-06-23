@@ -99,6 +99,8 @@ function pckgManager.fullinit() -- full init (minimal config without checking fo
     pckgManager.init_enums()
     pckgManager.init_config()
     pckgManager.loadDB()
+    pckgManager.loadCustomTypes()
+    pckgManager.loadPlugins()
 end
 
 
@@ -106,7 +108,7 @@ local function prettyPrint(level, text, di) -- pretty print msgs
     local levelData = { -- info about levels of prints
         [0]={ icon="*", color="8" }, -- icon color (debug)
         [2]={ icon="?", color="1" }, -- warning
-        [1]={ icon="V", color="d" }, -- succes
+        [1]={ icon="V", color="d" }, -- success
         [3]={ icon="!", color="e" }, -- error
     }
 
@@ -230,7 +232,8 @@ function pckgManager.install(package, version) -- install package
 
     pckgManager.installeddb[package] = { -- add pckg to list of installed packages
         version = version,
-        install_path = fileLocation
+        install_path = fileLocation,
+        CustomTypes = pckgFileData.CustomTypes
     }
 
     local files = {}
@@ -254,7 +257,18 @@ function pckgManager.install(package, version) -- install package
             local fileContent = fileRequest.readAll()
             fileRequest.close()
 
-            local filePath = fileLocation .. file
+
+            -- file path logic
+            -- @ - /PCKG-TYPE/packagename/ ( for example: @main.lua will be saved to /bin/packagename/main.lua if package type is application )
+            -- # - /config/packagename/ ( for example: #main.lua will be saved to /config/packagename/main.lua )
+            -- / - root
+
+            local Paths = {
+                ["@"]=fileLocation,
+                ["#"]="/config/"..package.."/"
+            }
+
+            local filePath = (Paths[string.sub(file, 1, 1)] or Paths["@"]) .. string.sub(file, 2)
 
             files[filePath] = fileContent
             pckgManager.print(pckgManager.printLevel.success, "file: "..file.." retrived and saved to buffer" )
@@ -525,27 +539,49 @@ function pckgManager.listAll()
     return packages
 end
 
---- test
-local function _test()
-    pckgManager.init_enums()
-    pckgManager.init_config()
-    pckgManager.dbContent = { -- minimal db with pckg
-        ["pckg"]={
-            latest="X",
-            X="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/pkg.json"
-
-        }
-    }
-    pckgManager.header()
-    pckgManager.install("pckg", "X")
-end
-
-
 function pckgManager.saveDB()
     pckgManager.saveAliases()
     pckgManager.saveInstalled()
     pckgManager.saveContent()
 end
+
+
+
+-- custom types
+function pckgManager.loadCustomTypes()
+    pckgManager.installPaths = pckgManager.installPaths or {}
+    for package, data in pairs(pckgManager.installeddb) do
+        if data.CustomTypes then
+            for type, path in pairs(data.CustomTypes) do
+                pckgManager.installPaths[type] = path
+            end
+        end
+    end
+    
+end
+
+
+
+
+
+
+
+
+
+
+
+-- plugin stuff
+
+function pckgManager.loadPlugin(code)
+
+end
+
+function pckgManager.loadPlugins()
+    
+end
+
+
+
 
 
 -- pinestore support
