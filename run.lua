@@ -70,7 +70,7 @@ commands = {
         local Packages = pckg.listAll()
 
         for _, package in pairs(Packages) do
-            print(package.pkg, '-', package.v)
+            print(package.pkg, '-', package.version)
         end
     end,
     sync=pckg.sync,

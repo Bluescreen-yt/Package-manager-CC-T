@@ -427,7 +427,7 @@ function pckgManager.list() -- list all installed packages
     for package, _ in pairs(pckgManager.installeddb) do
         table.insert(packages, {
             pkg=package,
-            v=_.version
+            version=_.version
         })
     end
 
@@ -495,13 +495,13 @@ function pckgManager.sync() -- sync db from sources
         for pckg, data in pairs(sourceData) do
             local Data = {}
             
-            for _VERSION, _URL in pairs(data) do -- merge version togheter to make big mass of versions avalible
-                if _VERSION == "latest" then
+            for version, _URL in pairs(data) do -- merge version togheter to make big mass of versions avalible
+                if version == "latest" then
                     if (not Data.latest) or tonumber(_URL) > tonumber(Data.latest) then
                         Data.latest = _URL
                     end
                 else
-                    Data[_VERSION] = _URL
+                    Data[version] = _URL
                 end
             end
 
@@ -533,7 +533,7 @@ function pckgManager.listAll()
     local packages = {}
     
     for pckg, _ in pairs(pckgManager.dbContent) do
-        table.insert(packages, { pkg=pckg, v=_.version })
+        table.insert(packages, { pkg=pckg, version=_.version })
     end
 
     return packages
