@@ -26,6 +26,11 @@ function pckgManager.setup() -- setup function ( setup whole project automatical
     pckgManager.init_enums() -- initalize default enums
     pckgManager.init_config() -- initialize default config 
 
+    if not fs.exists("/bin/pckg/plugins/") then -- check for /etc/pckg folder
+        pckgManager.print(pckgManager.printLevel.message, "creating /bin/pckg/plugins/ folder" )
+        fs.makeDir("/bin/pckg/plugins/") -- create it if not found
+    end
+
     if fs.exists(pckgManager.sourcesFile) then -- check for file with list of sources
         pckgManager.print(pckgManager.printLevel.success, "sources file found. no need for setup." ) -- inform user
 
@@ -101,7 +106,7 @@ function pckgManager.fullinit() -- full init (minimal config without checking fo
     pckgManager.init_config()
     pckgManager.loadDB()
     pckgManager.loadCustomTypes()
-    pckgManager.loadPlugins()
+    pckgManager.PMNG.loadPlugins()
 end
 
 
@@ -573,16 +578,73 @@ end
 
 
 -- plugin stuff
+pckgManager.PMNG = {}
+pckgManager.PMNG.plugins = {} -- list of all loaded plugins
+pckgManager.PMNG.pluginGlobals = {} -- to do: add plugin globals ( like pckgManager.PMNG.pluginGlobals.print = pckgManager.print ) -bs
 
-function pckgManager.loadPlugin(code)
+function pckgManager.PMNG.Run("func", ...)
+    local func = func or ""
+    local args = {...}
+    
+    local funs = {}
+    for _, plugin in pairs(pckgManager.PMNG.plugins) do
+        if plugin[func] then
+            table.insert(funs, function()
+                plugin[func](table.unpack(args))
+            end)
+        end
+    end
 
-end
-
-function pckgManager.loadPlugins()
+    parallel.waitForAll(table.unpack(funs)) -- run all funcs at same time
     
 end
 
+function pckgManager.PMNG.loadPlugin(code)
+    local code = code or ""
+    local plugin = load(code, )
+end
 
+function pckgManager.PMNG.loadPlugins(pathOverride)
+    path = pathOverride or "/bin/pckg/plugins/"
+    if not fs.exists(path) then return end
+
+    local plugins = fs.list(path)
+    if #plugins == 0 then return end
+
+    pckgManager.print(pckgManager.printLevel.message, path.." plugins found. loading.." )
+    local FUNCS = {}
+    for _, plugin in pairs(plugins) do
+        local func = function ()
+            local pluginPath = path .. "/" .. plugin .. "/main.lua"
+
+            if not fs.exists(pluginPath) then
+                return
+            end
+
+            local _pluginFile = fs.open(pluginPath, 'r')
+            local pluginSource = _pluginFile.readAll()
+            _pluginFile.close()
+
+            local _PluginGlobals = setmetatable({}, { __index = _G })
+            _PluginGlobals.pckgPrint = function( level, txt )
+                pckgManager.print(level, "[ PLUGIN: "..plugin.." ] "..txt)
+            end
+
+            local _PluginPckgMng = setmetatable({}, { __index = pckgManager })
+
+            _PluginGlobals.pckg = _PluginPckgMng
+
+            local plugin = load(pluginSource, plugin, "b", _PluginGlobals)()
+            
+            table.insert(pckgManager.PMNG.plugins, plugin)
+        end
+
+        table.insert(FUNCS, func)
+    end
+
+    parallel.waitForAll(table.unpack(FUNCS)) -- load all plugins at same time
+
+end
 
 
 
