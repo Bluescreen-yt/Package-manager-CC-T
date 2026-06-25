@@ -589,7 +589,9 @@ function pckgManager.PMNG.run(func, ...)
     local results = {}
     for _, plugin in pairs(pckgManager.PMNG.plugins) do
         if plugin[func] then
-            table.insert(results, plugin[func](table.unpack(args))) -- waits for plugin and returns the value
+            pcall(function()
+                table.insert(results, plugin[func](table.unpack(args))) -- run func
+            end)
         end
     end
 

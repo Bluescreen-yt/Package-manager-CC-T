@@ -1,10 +1,17 @@
--- to do: -bs
+-- to do: -bs (old)
 -- file:{path} - install from file (pkg.json)
 -- html / raw:{link} - raw pkg.json from url
 -- gh: {user}/{repo} - install from github
 -- gl: {user}/{repo} - install from gitlab
 -- psi: {project_id} - install from pinestore using id
 -- gh: {user}/{repo}#{branch} - install specific branch from github 
+
+-- to do: -bs (new)
+-- add switches/prefixed
+-- -po: (path overite)
+-- -dl: (debug level)
+
+
 
 
 local PCKG_LOCK = "/etc/pckg/.pckg_lock"
@@ -20,6 +27,7 @@ pckg.PMNG.loadPlugins()
 pckg.debugLevel = pckg.debugLevels.debug
 pckg.loadDB()
 pckg.header()
+
 
 local commands
 commands = {
@@ -63,8 +71,8 @@ commands = {
         print("sync - syncs the package database with online sources")
     end,
     list=function ()
-        for _, pkg in ipairs(pckg.list()) do
-            print(package.pkg, '-', package.v)
+        for _, package in ipairs(pckg.list()) do
+            print(package.pkg, '-', package.version)
         end
     end,
     listAll=function ()
@@ -76,6 +84,11 @@ commands = {
     end,
     sync=pckg.sync,
 }
+
+
+--local CustomCommands = pckg.PMNG.run("_CustomCommands") or {} -- to do
+
+
 
 local success, err = pcall(function () -- just in case
 
