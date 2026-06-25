@@ -582,7 +582,7 @@ pckgManager.PMNG = {}
 pckgManager.PMNG.plugins = {} -- list of all loaded plugins
 pckgManager.PMNG.pluginGlobals = {} -- to do: add plugin globals ( like pckgManager.PMNG.pluginGlobals.print = pckgManager.print ) -bs
 
-function pckgManager.PMNG.Run("func", ...)
+function pckgManager.PMNG.Run(func, ...)
     local func = func or ""
     local args = {...}
     
@@ -590,18 +590,51 @@ function pckgManager.PMNG.Run("func", ...)
     for _, plugin in pairs(pckgManager.PMNG.plugins) do
         if plugin[func] then
             table.insert(funs, function()
-                plugin[func](table.unpack(args))
+                return plugin[func](table.unpack(args)) -- waits for plugin and returns the value
             end)
         end
     end
 
-    parallel.waitForAll(table.unpack(funs)) -- run all funcs at same time
-    
+    local results = parallel.waitForAll(table.unpack(funs)) -- run all plugins at same time and wait for them to finish
+
+    for i, result in pairs(results) do
+
+        pckgManager.print(pckgManager.printLevel.warning, "plugin "..i.." returned, function "..result.."func" )
+
+    end
+
+    return results
 end
 
-function pckgManager.PMNG.loadPlugin(code)
-    local code = code or ""
-    local plugin = load(code, )
+function pckgManager.PMNG.loadPlugin(plugin)
+        local pluginPath = path .. "/" .. plugin .. "/main.lua"
+
+        if not fs.exists(pluginPath) then
+            return
+        end
+
+        local _pluginFile = fs.open(pluginPath, 'r')
+        local pluginSource = _pluginFile.readAll()
+        _pluginFile.close()
+
+        pckgManager.PMNG.fromCode(pluginSource, plugin)
+
+end
+
+function pckgManager.PMNG.fromCode(code, codeName)
+
+        local _PluginGlobals = setmetatable({}, { __index = _G })
+        _PluginGlobals.pckgPrint = function( level, txt )
+            pckgManager.print(level, "[ PLUGIN: "..plugin.." ] "..txt)
+        end
+
+        local _PluginPckgMng = setmetatable({}, { __index = pckgManager })
+
+        _PluginGlobals.pckg = _PluginPckgMng
+
+        local plugin = load(code, codeName, "t", _PluginGlobals)()
+        
+        table.insert(pckgManager.PMNG.plugins, plugin)
 end
 
 function pckgManager.PMNG.loadPlugins(pathOverride)
@@ -615,28 +648,7 @@ function pckgManager.PMNG.loadPlugins(pathOverride)
     local FUNCS = {}
     for _, plugin in pairs(plugins) do
         local func = function ()
-            local pluginPath = path .. "/" .. plugin .. "/main.lua"
-
-            if not fs.exists(pluginPath) then
-                return
-            end
-
-            local _pluginFile = fs.open(pluginPath, 'r')
-            local pluginSource = _pluginFile.readAll()
-            _pluginFile.close()
-
-            local _PluginGlobals = setmetatable({}, { __index = _G })
-            _PluginGlobals.pckgPrint = function( level, txt )
-                pckgManager.print(level, "[ PLUGIN: "..plugin.." ] "..txt)
-            end
-
-            local _PluginPckgMng = setmetatable({}, { __index = pckgManager })
-
-            _PluginGlobals.pckg = _PluginPckgMng
-
-            local plugin = load(pluginSource, plugin, "b", _PluginGlobals)()
-            
-            table.insert(pckgManager.PMNG.plugins, plugin)
+            pckgManager.PMNG.loadPlugin(plugin)
         end
 
         table.insert(FUNCS, func)
@@ -644,6 +656,7 @@ function pckgManager.PMNG.loadPlugins(pathOverride)
 
     parallel.waitForAll(table.unpack(FUNCS)) -- load all plugins at same time
 
+    pckgManager.PMNG.Run("init")
 end
 
 
