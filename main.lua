@@ -596,12 +596,12 @@ function pckgManager.PMNG.Run(func, ...)
     end
 
     local results = parallel.waitForAll(table.unpack(funs)) -- run all plugins at same time and wait for them to finish
+    print(results)
+    -- for i, result in pairs(results) do
 
-    for i, result in pairs(results) do
+    --     pckgManager.print(pckgManager.printLevel.warning, "plugin "..i.." returned, function "..result.."func" )
 
-        pckgManager.print(pckgManager.printLevel.warning, "plugin "..i.." returned, function "..result.."func" )
-
-    end
+    -- end
 
     return results
 end
@@ -644,9 +644,10 @@ function pckgManager.PMNG.loadPlugins(pathOverride)
     local plugins = fs.list(path)
     if #plugins == 0 then pckgManager.print(pckgManager.printLevel.message, "no plugins found" ) return end
 
-    pckgManager.print(pckgManager.printLevel.message, path.." plugins found. loading.." )
+    pckgManager.print(pckgManager.printLevel.message, #plugins.." plugins found. loading.." )
     local FUNCS = {}
     for _, plugin in pairs(plugins) do
+        pckgManager.print(pckgManager.printLevel.message, "loading plugin: "..plugin )
         local func = function ()
             pckgManager.PMNG.loadPlugin(path, plugin)
         end

@@ -97,6 +97,13 @@ fs.delete(PCKG_LOCK)
 end)
 if not succ then print("error: "..res) end
 else
-    print("pckg is already running! wait for it to run, if thats an error delete the lock file at "..PCKG_LOCK.." report it to developers")
+    if arg[1] == "_UNLOCK" then
+        fs.delete(PCKG_LOCK)
+        print("lock file deleted, you can now run pckg again")
+    else
+
+        print("pckg is already running! wait till it stops before running another instance, if thats an error delete the lock file at "..PCKG_LOCK.." (or run pckg _UNLOCK) and report the issue to the developers")
+
+    end
 end
 
