@@ -16,6 +16,7 @@ fs.open(PCKG_LOCK, "w").close()
 local pckg = require("main")
 pckg.init_enums()
 pckg.init_config()
+pckg.PMNG.loadPlugins()
 pckg.debugLevel = pckg.debugLevels.debug
 pckg.loadDB()
 pckg.header()
