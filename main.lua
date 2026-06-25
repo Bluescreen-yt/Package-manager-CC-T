@@ -625,7 +625,7 @@ function pckgManager.PMNG.fromCode(code, codeName)
 
         local _PluginGlobals = setmetatable({}, { __index = _G })
         _PluginGlobals.pckgPrint = function( level, txt )
-            pckgManager.print(level, "[ PLUGIN: "..plugin.." ] "..txt)
+            pckgManager.print(level, "[ PLUGIN: "..codeName.." ] "..txt)
         end
 
         local _PluginPckgMng = setmetatable({}, { __index = pckgManager })
