@@ -606,7 +606,7 @@ function pckgManager.PMNG.Run(func, ...)
     return results
 end
 
-function pckgManager.PMNG.loadPlugin(plugin)
+function pckgManager.PMNG.loadPlugin(path, plugin)
         local pluginPath = path .. "/" .. plugin .. "/main.lua"
 
         if not fs.exists(pluginPath) then
@@ -638,17 +638,17 @@ function pckgManager.PMNG.fromCode(code, codeName)
 end
 
 function pckgManager.PMNG.loadPlugins(pathOverride)
-    path = pathOverride or "/bin/pckg/plugins/"
-    if not fs.exists(path) then return end
+    path = pathOverride or "/bin/pckg/plugins"
+    if not fs.exists(path) then pckgManager.print(pckgManager.printLevel.warning, "no plugins path found" ) return end
 
     local plugins = fs.list(path)
-    if #plugins == 0 then return end
+    if #plugins == 0 then pckgManager.print(pckgManager.printLevel.message, "no plugins found" ) return end
 
     pckgManager.print(pckgManager.printLevel.message, path.." plugins found. loading.." )
     local FUNCS = {}
     for _, plugin in pairs(plugins) do
         local func = function ()
-            pckgManager.PMNG.loadPlugin(plugin)
+            pckgManager.PMNG.loadPlugin(path, plugin)
         end
 
         table.insert(FUNCS, func)
