@@ -582,21 +582,19 @@ pckgManager.PMNG = {}
 pckgManager.PMNG.plugins = {} -- list of all loaded plugins
 pckgManager.PMNG.pluginGlobals = {} -- to do: add plugin globals ( like pckgManager.PMNG.pluginGlobals.print = pckgManager.print ) -bs
 
-function pckgManager.PMNG.Run(func, ...)
+function pckgManager.PMNG.run(func, ...)
     local func = func or ""
     local args = {...}
     
-    local funs = {}
+    local results = {}
     for _, plugin in pairs(pckgManager.PMNG.plugins) do
         if plugin[func] then
-            table.insert(funs, function()
-                return plugin[func](table.unpack(args)) -- waits for plugin and returns the value
-            end)
+            table.insert(results, plugin[func](table.unpack(args))) -- waits for plugin and returns the value
         end
     end
 
-    local results = parallel.waitForAll(table.unpack(funs)) -- run all plugins at same time and wait for them to finish
-    print(results)
+    -- local results = parallel.waitForAll(table.unpack(funs)) -- run all plugins at same time and wait for them to finish
+    -- print(results)
     -- for i, result in pairs(results) do
 
     --     pckgManager.print(pckgManager.printLevel.warning, "plugin "..i.." returned, function "..result.."func" )
