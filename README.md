@@ -69,6 +69,17 @@ join our [discord](https://dsc.gg/cardboardos) here
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
+# How to use
+
+> ## Avalible commands:
+> help - shows information about pckg
+> install {package} - install packages.
+> remove {package} - removes packages.
+> 
+
+
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
+
 # Publishing: <b>
 pkg.json is information about your package like, for example: name, version, description, author, type of package
 
@@ -237,7 +248,9 @@ if you want to publish package to official source please make ticket on discord.
 <br>
 
 > ## pckgManager.listAll()
-> returns list of all packages avalivble
+> returns list of all packages avalivble with version
+> package name ( result[id].pkg )
+> package version ( result[id].v )
 
 <br>
 
