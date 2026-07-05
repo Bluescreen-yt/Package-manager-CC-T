@@ -15,15 +15,13 @@
 
 # Features: <b>
 
-- 🟢 Easy to use
-- ☁️ Simple to publish packages 
-- 🏃‍♂️‍➡️ Fast
-- 📥 Simple to install
-- 🏅 Package requirements support
-- 🗃️ Multifile package support
-- 📑 Multiple package versions support
-- 🔓 Open source ( ofc )
+- 📥 Simple to install and use
+- 🏅 support for packages with dependencies
+- 🗃️ support for packages with multiple files
+- 📑 support for packages with multiple versions
+- 🔓 Free and open source
 - 🎖️ can be required and used in others scripts (/bin/pckg/main.lua)
+- ⚙️ custom plugin support
 
 </b>
 
@@ -34,53 +32,26 @@ join our [discord](https://dsc.gg/cardboardos) here
 
 # Installation:
 
-> From gtihub ( main ) using wget 
-> ```craft-os
-> wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
-> ```
-> <br> 
-> <B> or using pine store</B>
-> 
-> ```craft-os
-> wget run https://pinestore.cc/d/216
-> ```
+Not released yet.
 
 <br>
 
-> <B> From gtihub ( experimental ) using wget</B>
-> 
-> ```craft-os
-> wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/install.lua
-> ```
+<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
-> [!WARNING]
-> might contain some bugs
-
-<br>
-
-> <B> From gtihub ( dev ) using wget</B>
->
-> ```craft-os
-> wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/dev/install.lua
-> ```
-
-> [!CAUTION]
-> WILL CONTAIN A LOT OF BUGS
+# Feedback / community:
+  💬 Discord: [dsc.gg/cardboardos](https://dsc.gg/cardboardos)
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 # How to use
 
-> ## Avalible commands:
-> help - shows information about pckg
-> install {package} - install packages.
-> remove {package} - removes packages.
-> 
+Not released yet.
 
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 # Publishing: <b>
+<!-- 
 pkg.json is information about your package like, for example: name, version, description, author, type of package
 
 example of pkg.json file:
@@ -95,52 +66,51 @@ example of core.json file:
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
-if you want to publish package to official source please make ticket on discord.
+if you want to publish package to official source please make ticket on discord. -->
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 # TO DO:
 
 
-| ⚫ | ⚪ | 🔵 | ⭕ |
-| --- | --- | --- | --- |
-| to do | in progress | done | canceled
+| ⚫     | ⚪           | 🔵　 | ⭕        |
+| -------| -------------| ------| ----------|
+| to do | in progress | done | canceled |
 
-| state | action | comments |
-| --- | --- | --- |
-| 🔵 | create repo |  |
-| 🔵 | add install function |  |
-| ⚪ | add remove function |  |
-| ⚪ | add install command |  |
-| ⚪ | add remove command |  |
-| ⚫ | add search function |  |
-| ⚫ | add search command |  |
-| ⚫ | add list function |  |
-| ⚫ | add list command |  |
-| 🔵 | add list all packages avalible function |  |
-| ⚫ | add list all packages avalible command |  |
-| 🔵 | create pinestore page |  |
-| ⚫ | add pinestore support |  |
-| ⚫ | design easier / better way of publishing packages |  |
-| ⚫ | add better github support |  |
-| ⚫ | add functions to: require library throught /bin/pckg/main.lua, check if package is installed + check version, get info about package. |  |
+| state | action                                                                                                                                | comments |
+| -------| ---------------------------------------------------------------------------------------------------------------------------------------| ----------|
+| 🔵　　| create repo                                                                                                                           |          |
+| 🔵　　| add install function                                                                                                                  |          |
+| 🔵　　| add remove function                                                                                                                   |          |
+| 🔵　　| add install command                                                                                                                   |          |
+| ⚪　　 | add remove command                                                                                                                    |          |
+| ⚫　　 | add search function                                                                                                                   |          |
+| ⚫　　 | add search command                                                                                                                    |          |
+| 🔵　　| add list function                                                                                                                     |          |
+| 🔵　　| add list command                                                                                                                      |          |
+| 🔵　　| add list all packages avalible function                                                                                               |          |
+| 🔵　　| add list all packages avalible command                                                                                                |          |
+| 🔵　　| create pinestore page                                                                                                                 |          |
+| ⚪　　 | add pinestore support                                                                                                                 |          |
+| ⚫　　 | design easier / better way of publishing packages                                                                                     |          |
+| ⚪　　 | add better github support                                                                                                             |          |
+| 🔵　　| add functions to: require library throught /bin/pckg/main.lua, check if package is installed + check version, get info about package. |          |
 
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 # FAQ:
-- none - feel free to ask questions
+- none - feel free to ask questions on my [discord server](dsc.gg/cardboardos)
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 # Known issues:
 
-1. aliases not working
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
 # For devs:
-
+<!-- 
 > ## pckgManager.header()
 > Prints header into console ( if debugging level is `pckgManager.debugLevels.debug` or 0 )
 
@@ -266,8 +236,8 @@ if you want to publish package to official source please make ticket on discord.
 
 > ## pckgManager.saveContent()
 > used for saving content db
-
+ -->
 
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/separator.png" width="100%" />
 
-report any bugs / issues / idea to discord or create github issue.
+report any bugs / issues / idea to [discord](dsc.gg/cardboardos) or create github issue.
