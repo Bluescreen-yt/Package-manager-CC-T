@@ -15,7 +15,7 @@ function pckgManager.header() -- header
     pckgManager.print(pckgManager.printLevel.message, "made by cardboard os dev team" ) -- dev team info
     pckgManager.print(pckgManager.printLevel.message, "thank you for using pckg! have a nice day ;p" )
     pckgManager.print(pckgManager.printLevel.message, "https://github.com/Bluescreen-yt/Package-manager-CC-T" ) -- link to github
-    pckgManager.print(pckgManager.printLevel.message, "feel free to contribiute" ) 
+    pckgManager.print(pckgManager.printLevel.message, "feel free to contribute" )
     pckgManager.print(pckgManager.printLevel.message, "any help / feedback / idea is appreciated!" )
     pckgManager.print(pckgManager.printLevel.message, "join our discord for news and updates + guides and welcoming community: dsc.gg/cardboardos" ) -- discord info
     pckgManager.print(pckgManager.printLevel.message, "====================================================================================" )
@@ -39,7 +39,7 @@ function pckgManager.setup() -- setup function ( setup whole project automatical
     end
 
     local defaultSources = {} -- create minimal / basic sources file
-    table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/core.json") -- pckg
+    table.insert(defaultSources, "https://github.com/Bluescreen-yt/Package-manager-CC-T") -- pckg
     table.insert(defaultSources, "https://raw.githubusercontent.com/Bluescreen-yt/CardBoard-OS-CCT/refs/heads/main/core.json") -- cbos
 
     local file = table.concat( defaultSources, "\n") -- file content
@@ -91,6 +91,11 @@ function pckgManager.init_config() -- initial default config
     -- installed packages db
     pckgManager.installeddb = {} -- db containing ALL installed packages on pc
     pckgManager.installeddbPath = "/etc/pckg/installed.json" -- path to db with installed packages ( just so package manager doesnt need to scan FOR ALL packages in ALL directories on pc just to run / require it or just do any operation) (/etc/pckg/installed.json by default)
+    pckgManager.SourcesFuncs = {
+        _=function (URL)
+            -- move existing funtion here
+        end
+    }
 
     -- aliases
     pckgManager.aliasPath = "/etc/pckg/alias.json" -- path to file with aliases (/etc/pckg/alias.json by default)
@@ -571,13 +576,12 @@ end
 
 
 
+---------------------------------------------
+--
+--       PLUGINS SUPPORT
+--
+---------------------------------------------
 
-
-
-
-
-
--- plugin stuff
 pckgManager.PMNG = {}
 pckgManager.PMNG.plugins = {} -- list of all loaded plugins
 pckgManager.PMNG.pluginGlobals = {} -- to do: add plugin globals ( like pckgManager.PMNG.pluginGlobals.print = pckgManager.print ) -bs
@@ -623,7 +627,7 @@ end
 
 function pckgManager.PMNG.fromCode(code, codeName)
 
-        local _PluginGlobals = setmetatable({}, { __index = _G })
+        local _PluginGlobals = setmetatable({}, pckgManager.PMNG.pluginGlobals)
         _PluginGlobals.pckgPrint = function( level, txt )
             pckgManager.print(level, "[ PLUGIN: "..codeName.." ] "..txt)
         end
@@ -661,13 +665,18 @@ function pckgManager.PMNG.loadPlugins(pathOverride)
 end
 
 
+---------------------------------------------
+--
+--      BUILD IN PLUGINS
+--
+---------------------------------------------
 
 -- pinestore support
-pckgManager.PSI = {} -- Pine Store Support
-pckgManager.PSI.API_URL = "https://pinestore.cc/api"
+pckgManager.PMNG.plugins.PSI = {} -- Pine Store Support
+pckgManager.PMNG.plugins.PSI.API_URL = "https://pinestore.cc/api"
 
 
-function pckgManager.PSI.getAllProjects()
+function pckgManager.PMNG.plugins.PSI.getAllProjects()
     local r = http.get(pckgManager.PSI.API_URL.."/projects")
     local res = textutils.unserializeJSON(r.readAll())
     r.close()
@@ -680,9 +689,47 @@ end
 
 
 
--- GITHUB / GITLAB support
+-- GITHUB support
+
+pckgManager.PMNG.plugins.GH = {} -- Pine Store Support
+local GH = {}
+GH.API_URL = "https://api.github.com/"
+-- https://github.com/Bluescreen-yt/Package-manager-CC-T
+
+function GH.init()
+    AssignUrlOverite({
+        url='github.com',
+        PackageSource=function (url)
+		local pkgs = {}
+
+             user, repo = string.match(url, 'github.com/([^/]+)/([^/]+)')
+             requestUrl = GH.API_URL + "/repos/"..user.."/"..repo.."/releases"
+            GHRequest = http.get(requestUrl)
+             Versions = GHRequest.readAll()
+            GHRequest.close()
+            
+            Versions = textutils.unserialiseJSON(
+                Versions
+            )
+
+            for i, release in ipairs(Versions) do
+		assets = release["assets"]
+		for j, asset in ipairs(assets) do
+			if asset.name == "pkg.json" then
+				table.insert(pkgs, asset.browser_download_url)
+			end
+		end
+            end
 
 
+            return pkgs
+        end
+    })
+
+
+
+
+end
 
 
 
@@ -705,3 +752,16 @@ function pckgManager.RequirePackage(pckg)
 end
 
 return pckgManager
+
+
+
+
+
+
+-- TinyTonl
+pckgManager.TinyToml = {}
+function endpckgManager.TinyToml.Loads(tomlString)
+    
+
+end
+

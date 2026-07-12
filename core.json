@@ -1,6 +1,5 @@
 {
-    "pckg":{
-        "latest":"0.3",
-        "0.3":"https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/pkg.json"
+    "pckg":{ 
+        "link":"https://github.com/Bluescreen-yt/Package-manager-CC-T"
     }
 }

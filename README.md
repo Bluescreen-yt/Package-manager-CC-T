@@ -11,7 +11,7 @@
 
 </div> <br>
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" /> <br>
+<img src="ReadMeStuff/separator.png" width="100%" /> <br>
 
 # Features: <b>
 
@@ -25,10 +25,10 @@
 
 </b>
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" /><br><br>
+<img src="ReadMeStuff/separator.png" width="100%" /><br><br>
 join our [discord](https://dsc.gg/cardboardos) here
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" /> 
+<img src="ReadMeStuff/separator.png" width="100%" /> 
 
 # Installation:
 
@@ -36,19 +36,19 @@ Not released yet.
 
 <br>
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" />
+<img src="ReadMeStuff/separator.png" width="100%" />
 
 # Feedback / community:
   💬 Discord: [dsc.gg/cardboardos](https://dsc.gg/cardboardos)
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" />
+<img src="ReadMeStuff/separator.png" width="100%" />
 
 # How to use
 
 Not released yet.
 
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" />
+<img src="ReadMeStuff/separator.png" width="100%" />
 
 # Publishing: <b>
 <!-- 
@@ -64,26 +64,25 @@ to add another source (core.json) you need to edit `/etc/pckg/sources.txt`
 example of core.json file:
 <img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/ExampleCORE.png" />
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" />
+<img src="ReadMeStuff/separator.png" width="100%" />
 
 if you want to publish package to official source please make ticket on discord. -->
-
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" />
+<img src="ReadMeStuff/separator.png" width="100%" />
 
 # TO DO:
 
 
-| ⚫     | ⚪           | 🔵　 | ⭕        |
-| -------| -------------| ------| ----------|
-| to do | in progress | done | canceled |
+| ⚫     | ⚪           | 🔵　 | ⭕        | ⚙️ |
+| -------| -------------| ------| ----------| --------|
+| to do | in progress | done | canceled |        |
 
 | state | action                                                                                                                                | comments |
 | -------| ---------------------------------------------------------------------------------------------------------------------------------------| ----------|
 | 🔵　　| create repo                                                                                                                           |          |
 | 🔵　　| add install function                                                                                                                  |          |
-| 🔵　　| add remove function                                                                                                                   |          |
+| ⚪　　 | add remove function                                                                                                                   |          |
 | 🔵　　| add install command                                                                                                                   |          |
-| ⚪　　 | add remove command                                                                                                                    |          |
+| 🔵　　| add remove command                                                                                                                    |          |
 | ⚫　　 | add search function                                                                                                                   |          |
 | ⚫　　 | add search command                                                                                                                    |          |
 | 🔵　　| add list function                                                                                                                     |          |
@@ -97,17 +96,17 @@ if you want to publish package to official source please make ticket on discord.
 | 🔵　　| add functions to: require library throught /bin/pckg/main.lua, check if package is installed + check version, get info about package. |          |
 
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" />
+<img src="ReadMeStuff/separator.png" width="100%" />
 
 # FAQ:
 - none - feel free to ask questions on my [discord server](dsc.gg/cardboardos)
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" />
+<img src="ReadMeStuff/separator.png" width="100%" />
 
 # Known issues:
 
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" />
+<img src="ReadMeStuff/separator.png" width="100%" />
 
 # For devs:
 <!-- 
@@ -238,6 +237,9 @@ if you want to publish package to official source please make ticket on discord.
 > used for saving content db
  -->
 
-<img src="https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/ReadMeStuff/separator.png" width="100%" />
+<img src="ReadMeStuff/separator.png" width="100%" />
 
 report any bugs / issues / idea to [discord](dsc.gg/cardboardos) or create github issue.
+
+
+
