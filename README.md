@@ -94,6 +94,7 @@ if you want to publish package to official source please make ticket on discord.
 | ⚫　　 | design easier / better way of publishing packages                                                                                     |          |
 | ⚪　　 | add better github support                                                                                                             |          |
 | 🔵　　| add functions to: require library throught /bin/pckg/main.lua, check if package is installed + check version, get info about package. |          |
+| ⚫　　| Refactore code |          |
 
 
 <img src="ReadMeStuff/separator.png" width="100%" />

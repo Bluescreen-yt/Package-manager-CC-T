@@ -1,5 +1,5 @@
 # Contribiuting to pckg
-Thanks for your interest in improving pckg
+Thanks for your interest in improving pckg. <br>
 fixing spelling mistakes, updating readme.md, fixing bugs, adding new features. Your help is welcome, even the smallest one.
 
 
