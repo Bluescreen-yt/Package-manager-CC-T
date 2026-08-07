@@ -32,7 +32,13 @@ join our [discord](https://dsc.gg/cardboardos) here
 
 # Installation:
 
-Not released yet.
+To install <b>DEV</b> build run this command:
+```bash
+wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
+```
+> [!CAUTION]
+> This build might containg a lot of bugs / errors.
+
 
 <br>
 
