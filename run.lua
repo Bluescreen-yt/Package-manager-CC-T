@@ -35,6 +35,7 @@ commands = {
         pckg.remove(pkg)
         pckg.install(pkg)
     end,
+    init=pckg.setup,
     createStartupFile=function ()
         if fs.exists("/startup.lua") then
             print("startup.lua already exists! are you sure you want to overite it? (y/n)")
