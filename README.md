@@ -32,6 +32,8 @@ join our [discord](https://dsc.gg/cardboardos) here
 
 # Installation:
 
+## PCKG is STILL in development there are no official releases yet.
+
 To install <b>DEV</b> build run this command:
 ```bash
 wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/refs/heads/main/install.lua
@@ -51,7 +53,7 @@ wget run https://raw.githubusercontent.com/Bluescreen-yt/Package-manager-CC-T/re
 
 # How to use
 
-Not released yet.
+use `pckg help` for list of commands
 
 
 <img src="ReadMeStuff/separator.png" width="100%" />
