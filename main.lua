@@ -151,7 +151,7 @@ function pckgManager.getPackagesCount() -- get tottal count of packages FOUND ( 
 	return count
 end
 
-function pckgManager.info() -- get info about pckg
+function pckgManager.pckginfo() -- get info about pckg
 	return pckgManager.version, pckgManager.name, pckgManager.getPackagesCount()
 end
 
@@ -589,6 +589,82 @@ function pckgManager.loadCustomTypes()
 	end
 end
 
+
+---------------------------------------------
+--
+--      UTILS
+--
+---------------------------------------------
+pckgManager.utils = {}
+local utils = {}
+pckgManager.utils.__index = utils
+
+utils.hash = {} -- hash (mostly used to check if package was installed correctly )
+utils.hash.magicNumber = {7919, 2039, 691, 7, 89, 149, 71} -- all prime numbers
+
+function utils.hash.hash(str) -- simple hash
+	local HASH = utils.hash.BASE[1] * 128 -- starting hash
+	for idx=1, #str do -- loop for every character
+		local char = string.sub(str,idx,idx) -- get character
+		ascii = string.byte(char) * 64 -- get ascii index
+
+		local _BaseIdx= 1 + ( idx % #utils.hash.magicNumber ) -- index for the magicNumber
+
+		HASH = HASH*utils.hash.magicNumber[_BaseIdx]+ascii -- hash
+		HASH = HASH % 10^13 -- to avoid weird big number glitches
+	end
+
+	return HASH
+end
+
+--[[ require("main").utils.__index.hash.dirToHash("e")
+]]--
+
+function utils.hash.dirToHash(path)
+	local struct = utils.generateDirStruct(path)
+
+	local hashes = {} -- list of all hashed files
+	for file, content in pairs(struct) do -- for every file
+		local hash = utils.hash.hash(file .. " -|:=:|- " .. content)
+		table.insert(hashes, hash)
+	end
+
+	local MainHash = 6969 -- base hash
+	for _, hash in ipairs(hashes) do -- for hash in hases
+
+		local _BaseIdx= 1 + ( _ % #utils.hash.magicNumber )
+
+		MainHash = MainHash * utils.hash.magicNumber[_BaseIdx] + hash*2
+		MainHash = MainHash % 10^13 -- to avoid weird big number glitches
+	end
+
+	return MainHash
+end
+
+function utils.DirStructHelper(struct, basePath, dir) -- helper for utils.generateDirStruct(path)
+	local fullPath = fs.combine(basePath, dir)
+	local list = fs.list(fullPath)
+	for _, f in ipairs(list) do
+		local filepath = fs.combine(fullPath, f)
+		
+		if fs.isDir(filepath) then
+			utils.DirStructHelper(struct, fullPath, f)
+		else
+			local FF = fs.open(filepath, 'r')
+			struct[filepath] = FF.readAll()
+			FF.close()
+		end
+	end
+end
+
+function utils.generateDirStruct(path) -- returns list of ALL files in the path.
+	local Struct = {}
+	utils.DirStructHelper(Struct, "/", path)
+	return Struct
+end
+
+
+
 ---------------------------------------------
 --
 --       PLUGINS SUPPORT
@@ -750,9 +826,5 @@ function pckgManager.RequirePackage(pckg)
 	pckgManager.print(pckgManager.printLevel.success, "package " .. pckg .. " is installed")
 	return require(pckgManager.installeddb[pckg].install_path, pckgManager.installeddb[pckg].version)
 end
-
--- TinyTonl
-pckgManager.TinyToml = {}
-function pckgManager.TinyToml.Loads(tomlString) end
 
 return pckgManager
